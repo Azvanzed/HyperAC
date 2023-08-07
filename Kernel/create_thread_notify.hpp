@@ -5,13 +5,7 @@
 namespace create_thread_notify {
 inline bool g_is_registered = false;
 
-struct thread_creation_t {
-  PEPROCESS process;
-  PETHREAD thread;
-};
-
-void onThreadCreation(thread_creation_t* ctx);
-void Dispatcher(HANDLE pid, HANDLE tid, BOOLEAN create);
+void Dispatcher(HANDLE process_id, HANDLE thread_id, BOOLEAN create);
 bool Register();
 bool Unregister();
 }  // namespace create_thread_notify

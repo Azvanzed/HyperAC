@@ -5,44 +5,23 @@
 #include <mmu.hpp>
 #include <service.hpp>
 #include <threads.hpp>
+#include <shared.hpp>
 
-void create_thread_notify::onThreadCreation(thread_creation_t* ctx) {
-  const int64_t delay = 1000 * -10000;
-  KeDelayExecutionThread(KernelMode, false, (LARGE_INTEGER*)&delay);
-
-  const uint64_t backer = modules::findUserBase(
-      ctx->process, threads::getStartAddress(ctx->thread),
-      (IMAGE_SCN_MEM_EXECUTE | IMAGE_SCN_MEM_READ) & ~IMAGE_SCN_MEM_WRITE);
-
-  int output = service::invokeRequestCallback<int, int>(32);
-  print("output: %i", output);
-  
-  return mmu::Free(ctx);
-}
-
-void create_thread_notify::Dispatcher(HANDLE pid, HANDLE tid,
-                                      BOOLEAN create) {
-  UNREFERENCED_PARAMETER(tid);
-  UNREFERENCED_PARAMETER(create);
-
-  if (create && pid == g_game_pid) {
-    // avoid thread being created
-    thread_creation_t* ctx = mmu::Allocate<thread_creation_t>(pool);
-    PsLookupThreadByThreadId(tid, &ctx->thread);
-    PsLookupProcessByProcessId(pid, &ctx->process);
-
-    HANDLE hthread;
-    if (!NT_SUCCESS(PsCreateSystemThread(&hthread, THREAD_ALL_ACCESS, nullptr, nullptr, nullptr,
-            (PKSTART_ROUTINE)&onThreadCreation, (void*)ctx))) {
-      mmu::Free(ctx);
-      goto cleanup;
+void create_thread_notify::Dispatcher(HANDLE process_id, HANDLE thread_id, BOOLEAN create) {
+  if (create && g_service_pid != process_id) {
+    PETHREAD thread;
+    if (!NT_SUCCESS(PsLookupThreadByThreadId(thread_id, &thread))) {
+      return;
     }
 
-    ZwClose(hthread);
+    on_thread_creation_t ctx;
+    ctx.type = user_callback_type_e::thread_created;
+    ctx.start = threads::getStartAddress(thread);
+    ctx.thread_id = (uint64_t)thread_id;
+    ctx.process_id = (uint64_t)process_id;
 
-cleanup:
-    ObfDereferenceObject(ctx->process);
-    ObfDereferenceObject(ctx->thread);
+    service::invokeRequestCallback(ctx);
+    ObfDereferenceObject(thread);
   }
 }
 

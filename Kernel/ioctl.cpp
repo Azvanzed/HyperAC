@@ -1,36 +1,53 @@
 #include <intrin.h>
 
+#include <create_process_notify.hpp>
+#include <create_thread_notify.hpp>
 #include <ioctl.hpp>
-#include <shared.hpp>
+#include <load_image_notify.hpp>
+#include <ob_pre_operation.hpp>
 #include <service.hpp>
+#include <shared.hpp>
+#include <threads.hpp>
 
 NTSTATUS ioctl::Dispatcher(DEVICE_OBJECT* drv, IRP* irp) {
   UNREFERENCED_PARAMETER(drv);
 
   NTSTATUS status = STATUS_UNSUCCESSFUL;
-  uint64_t byteCount = 0;
-
   const IO_STACK_LOCATION* stack = IoGetCurrentIrpStackLocation(irp);
+
   switch (stack->Parameters.DeviceIoControl.IoControlCode) {
     case IOCTL_HYPERAC_INITIALIZE: {
       const initialize_input_t* input =
           (initialize_input_t*)irp->AssociatedIrp.SystemBuffer;
 
-      strcpy(g_game_name, input->game_name);
-      strcpy(g_service_name, input->service_name);
-      g_request_callback = input->request_callback;
+      g_callback = input->callback;
+      g_service = IoGetCurrentProcess();
+      g_service_pid = PsGetCurrentProcessId();
 
-      byteCount = sizeof(initialize_output); 
-      status = STATUS_SUCCESS;
-    } break;
-    case IOCTL_HYPERAC_HEARTBEAT: {
-      byteCount = sizeof(heartbeat_output_t);
+      if (!ob_pre_operation::Register()) {
+        print("failed to register a ObPreOperation Callback");
+        status = STATUS_UNSUCCESSFUL;
+        break;
+      } else if (!create_process_notify::Register()) {
+        print("failed to register a CreateProcess Callback");
+        status = STATUS_UNSUCCESSFUL;
+        break;
+      } else if (!create_thread_notify::Register()) {
+        print("failed to register a CreateThread Callback");
+        status = STATUS_UNSUCCESSFUL;
+        break;
+      } else if (!load_image_notify::Register()) {
+        print("failed to register a LoadImage Callback");
+        status = STATUS_UNSUCCESSFUL;
+        break;
+      }
+
+      irp->IoStatus.Information = sizeof(initialize_output);
       status = STATUS_SUCCESS;
     } break;
   }
 
   irp->IoStatus.Status = status;
-  irp->IoStatus.Information = byteCount;
 
   IofCompleteRequest(irp, IO_NO_INCREMENT);
   return status;

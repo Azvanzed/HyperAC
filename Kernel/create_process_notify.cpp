@@ -1,28 +1,17 @@
 #include <create_process_notify.hpp>
 #include <ntifs.h>
 #include <modules.hpp>
+#include <service.hpp>
 
-void create_process_notify::Dispatcher(HANDLE parent_id, HANDLE pid,
+void create_process_notify::Dispatcher(HANDLE parent_id, HANDLE process_id,
                                        BOOLEAN create) {
   if (create) {
-    PEPROCESS process = nullptr, parent = nullptr;
-    PsLookupProcessByProcessId(pid, &process);
-    PsLookupProcessByProcessId(parent_id, &parent);
+    on_process_creation_t ctx;
+    ctx.type = user_callback_type_e::process_created;
+    ctx.parent_id = (uint64_t)parent_id;
+    ctx.process_id = (uint64_t)process_id;
 
-    if (strcmp((char*)((uint64_t)process + 0x5a8), g_game_name) ||
-        strcmp((char*)((uint64_t)parent + 0x5a8), g_service_name)) {
-      goto cleanup;
-    }
-
-    g_service = parent;
-    g_game = process;
-
-    g_game_pid = pid;
-    g_service_pid = parent_id;
-
-  cleanup:
-    ObfDereferenceObject(process);
-    ObfDereferenceObject(parent);
+    service::invokeRequestCallback(ctx);
   }
 }
 

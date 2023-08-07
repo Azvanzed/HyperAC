@@ -129,6 +129,7 @@
       <TreatWarningAsError>false</TreatWarningAsError>
       <Optimization>Disabled</Optimization>
       <FloatingPointModel>Fast</FloatingPointModel>
+      <ForcedIncludeFiles>globals.hpp;shared.hpp;%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -136,13 +137,18 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
+      <AdditionalDependencies>wintrust.lib;ntdll.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="callbacks.cpp" />
+    <ClCompile Include="callbacks.hpp" />
     <ClCompile Include="entry.cpp" />
     <ClCompile Include="ioctl.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="docs.hpp" />
+    <ClInclude Include="globals.hpp" />
     <ClInclude Include="ioctl.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

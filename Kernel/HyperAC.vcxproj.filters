@@ -11,6 +11,7 @@
     <ClCompile Include="modules.cpp" />
     <ClCompile Include="threads.cpp" />
     <ClCompile Include="service.cpp" />
+    <ClCompile Include="processes.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="globals.hpp" />
@@ -24,5 +25,6 @@
     <ClInclude Include="modules.hpp" />
     <ClInclude Include="threads.hpp" />
     <ClInclude Include="service.hpp" />
+    <ClInclude Include="processes.hpp" />
   </ItemGroup>
 </Project>

@@ -13,22 +13,15 @@ void driverUnload(DRIVER_OBJECT* drv) {
 
   if (!ioctl::Unregister()) {
     print("failed to unregister Ioctl Callback");
-  }
-
-  ob_pre_operation::Unregister();
-
-  if (!create_process_notify::Unregister()) {
+  } else if (!create_process_notify::Unregister()) {
     print("failed to unregister CreateProcess Callback");
-  }
-
-  if (!create_thread_notify::Unregister()) {
+  } else if (!create_thread_notify::Unregister()) {
     print("failed to unregister CreateThread Callback");
-  }
-  
-  if (!load_image_notify::Unregister()) {
+  } else if (!load_image_notify::Unregister()) {
     print("failed to unregister LoadImage Callback");
   }
 
+  ob_pre_operation::Unregister();
   mmu::Release();
 }
 
@@ -37,20 +30,11 @@ NTSTATUS driverLoad(DRIVER_OBJECT* drv, UNICODE_STRING* reg) {
 
   mmu::Init();
 
-  g_ntoskrnl = modules::findKernelBase("ntoskrnl.exe");
-
   drv->DriverUnload = &driverUnload;
 
   if (!ioctl::Register(drv)) {
     print("failed to register a Ioctl Handler");
-  } else if (!ob_pre_operation::Register()) {
-    print("failed to register a ObPreOperation Callback");
-  } else if (!create_process_notify::Register()) {
-    print("failed to register a CreateProcess Callback");
-  } else if (!create_thread_notify::Register()) {
-    print("failed to register a CreateThread Callback");
-  } else if (!load_image_notify::Register()) {
-    print("failed to register a LoadImage Callback");
+    return STATUS_UNSUCCESSFUL;
   }
 
   return STATUS_SUCCESS;

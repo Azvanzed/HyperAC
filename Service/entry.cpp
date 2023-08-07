@@ -6,19 +6,11 @@
 #include <string>
 
 #include <ioctl.hpp>
-#include <shared.hpp>
-
-bool requestCallback(usermode_callback_t* ctx) {
-  printf("usermode called! [0x%llx] [%i]\n", ctx, *(int*)ctx->input);
-  *(int*)ctx->output = 53; 
-  return true;
-}
+#include <callbacks.hpp>
 
 int main() {
   initialize_input_t input;
-  strcpy(input.game_name, "notepad.exe");
-  strcpy(input.service_name, "HyperAC.exe");
-  input.request_callback = &requestCallback;
+  input.callback = &callbacks::Dispatcher;
 
   initialize_output output;
   printf("sent: %i\n",
@@ -30,15 +22,14 @@ int main() {
   startup.cb = sizeof(STARTUPINFO);
   
   PROCESS_INFORMATION info;
-  CreateProcess(L"C:\\Windows\\notepad.exe", nullptr, nullptr, nullptr, false,
+  CreateProcess(L"C:\\Windows\\System32\\notepad.exe", nullptr, nullptr, nullptr, false,
                 0, nullptr, nullptr, &startup, &info);
 
   CloseHandle(info.hProcess);
   CloseHandle(info.hThread);
 
   while (true) {
-    printf("alive\n");
-    Sleep(1000);
+    Sleep(100);
   }
 
   return 0;

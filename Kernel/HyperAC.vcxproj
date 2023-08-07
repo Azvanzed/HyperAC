@@ -124,7 +124,7 @@
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <FloatingPointModel>Fast</FloatingPointModel>
       <PreprocessorDefinitions>_VCRUNTIME_DISABLED_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ForcedIncludeFiles>globals.hpp;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles>globals.hpp;shared.hpp;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <AdditionalOptions>/wd4005 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
@@ -175,6 +175,7 @@
     <ClCompile Include="mmu.cpp" />
     <ClCompile Include="modules.cpp" />
     <ClCompile Include="ob_pre_operation.cpp" />
+    <ClCompile Include="processes.cpp" />
     <ClCompile Include="service.cpp" />
     <ClCompile Include="threads.cpp" />
   </ItemGroup>
@@ -188,6 +189,7 @@
     <ClInclude Include="mmu.hpp" />
     <ClInclude Include="modules.hpp" />
     <ClInclude Include="ob_pre_operation.hpp" />
+    <ClInclude Include="processes.hpp" />
     <ClInclude Include="service.hpp" />
     <ClInclude Include="threads.hpp" />
   </ItemGroup>

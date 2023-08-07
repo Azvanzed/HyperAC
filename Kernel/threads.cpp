@@ -1,16 +1,15 @@
 #include <threads.hpp>
 #include <docs.hpp>
 
-bool threads::createUserThread(void* routine, void* parameter, const bool wait) {
+CLIENT_ID threads::getCid(const PETHREAD thread) {
+  return *(CLIENT_ID*)((uint64_t)thread + 0x478);
+}
+
+bool threads::createUserThread(void* routine, void* parameter) {
   HANDLE hthread;
   if (!NT_SUCCESS(RtlCreateUserThread((HANDLE)-1, nullptr, false, 0, 0, 0,
                                       routine, parameter, &hthread, nullptr))) {
     return false;
-  }
-
-  if (wait) {
-    const int64_t delay = 10000 * -10000;
-    ZwWaitForSingleObject(hthread, false, (LARGE_INTEGER*)&delay);
   }
 
   ZwClose(hthread);

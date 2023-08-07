@@ -4,15 +4,18 @@
 #include <load_image_notify.hpp>
 #include <threads.hpp>
 #include <service.hpp>
+#include <shared.hpp>
+#include <modules.hpp>
 
 void load_image_notify::Dispatcher(UNICODE_STRING* image_name, HANDLE pid,
                                    IMAGE_INFO* info) {
-  UNREFERENCED_PARAMETER(image_name);
-  UNREFERENCED_PARAMETER(info);
+  on_image_load_t ctx;
+  ctx.type = user_callback_type_e::image_loaded;
+  ctx.process_id = (uint64_t)pid;
+  ctx.base = (uint64_t)info->ImageBase;
+  wcscpy(ctx.path, image_name->Buffer);
 
-  if (pid == g_game_pid) {
-
-  }
+  service::invokeRequestCallback(ctx);
 }
 
 bool load_image_notify::Register() {
