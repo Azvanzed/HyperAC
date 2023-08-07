@@ -75,6 +75,7 @@
     <IntDir>$(SolutionDir)Build\Intermediates\Service\</IntDir>
     <TargetName>HyperAC</TargetName>
     <IncludePath>.\;$(SolutionDir)\Shared\;$(IncludePath)</IncludePath>
+    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -145,10 +146,13 @@
     <ClCompile Include="callbacks.hpp" />
     <ClCompile Include="entry.cpp" />
     <ClCompile Include="ioctl.cpp" />
+    <ClCompile Include="files.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="docs.hpp" />
+    <ClInclude Include="game.hpp" />
     <ClInclude Include="globals.hpp" />
+    <ClInclude Include="files.hpp" />
     <ClInclude Include="ioctl.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

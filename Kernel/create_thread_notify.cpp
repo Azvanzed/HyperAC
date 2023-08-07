@@ -14,13 +14,14 @@ void create_thread_notify::Dispatcher(HANDLE process_id, HANDLE thread_id, BOOLE
       return;
     }
 
-    on_thread_creation_t ctx;
-    ctx.type = user_callback_type_e::thread_created;
-    ctx.start = threads::getStartAddress(thread);
-    ctx.thread_id = (uint64_t)thread_id;
-    ctx.process_id = (uint64_t)process_id;
+    on_thread_creation_t callback;
+    callback.type = user_callback_type_e::thread_created;
+    callback.start = threads::getStartAddress(thread);
+    callback.process_id = (uint64_t)PsGetCurrentProcessId();
+    callback.target.thread_id = (uint64_t)thread_id;
+    callback.target.process_id = (uint64_t)process_id;
 
-    service::invokeRequestCallback(ctx);
+    service::invokeRequestCallback(callback);
     ObfDereferenceObject(thread);
   }
 }

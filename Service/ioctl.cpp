@@ -12,9 +12,9 @@ bool ioctl::sendDriverEx(const uint32_t code, void* input,
     return false;
   }
 
-  uint32_t bytes = 0;
-  BOOL result = DeviceIoControl(device, code, input, input_size, output,
-                                output_size, (DWORD*)&bytes, nullptr);
+  DWORD bytes = 0;
+  const BOOL result = DeviceIoControl(device, code, input, input_size, output,
+                                      output_size, &bytes, nullptr);
 
   CloseHandle(device);
   return result && bytes == output_size;

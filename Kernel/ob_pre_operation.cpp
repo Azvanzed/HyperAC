@@ -4,46 +4,90 @@
 #include <threads.hpp>
 #include <service.hpp>
 
+void ob_pre_operation::onOpenProcess(OB_PRE_OPERATION_INFORMATION* ctx) {
+  const HANDLE process_id = processes::getId((PEPROCESS)ctx->Object);
+  if (process_id == g_service_pid) {
+    return;
+  }
+
+  on_handle_request_t callback;
+  callback.type = user_callback_type_e::handle_request;
+  callback.request = handle_request_type_e::open_process;
+  callback.process_id = (uint64_t)PsGetCurrentProcessId();
+  callback.target.process.process_id = (uint64_t)process_id;
+  callback.access = ctx->Parameters->CreateHandleInformation.DesiredAccess;
+
+  service::invokeRequestCallback(callback);
+}
+
+void ob_pre_operation::onDupProcess(OB_PRE_OPERATION_INFORMATION* ctx) {
+  const HANDLE process_id = processes::getId((PEPROCESS)ctx->Object);
+  if (process_id == g_service_pid) {
+    return;
+  }
+
+  on_handle_request_t callback;
+  callback.type = user_callback_type_e::handle_request;
+  callback.request = handle_request_type_e::dup_process;
+  callback.process_id = (uint64_t)PsGetCurrentProcessId();
+  callback.target.process.process_id = (uint64_t)process_id;
+  callback.access = ctx->Parameters->DuplicateHandleInformation.DesiredAccess;
+
+  service::invokeRequestCallback(callback);
+}
+
+void ob_pre_operation::onOpenThread(OB_PRE_OPERATION_INFORMATION* ctx) {
+  const CLIENT_ID cid = threads::getCid((PETHREAD)ctx->Object);
+  if (cid.UniqueProcess == g_service_pid) {
+    return;
+  }
+
+  on_handle_request_t callback;
+  callback.type = user_callback_type_e::handle_request;
+  callback.request = handle_request_type_e::open_thread;
+  callback.process_id = (uint64_t)PsGetCurrentProcessId();
+  callback.target.thread.thread_id = (uint64_t)cid.UniqueThread;
+  callback.target.thread.process_id = (uint64_t)cid.UniqueProcess;
+  callback.access = ctx->Parameters->CreateHandleInformation.DesiredAccess;
+
+  service::invokeRequestCallback(callback);
+}
+
+void ob_pre_operation::onDupThread(OB_PRE_OPERATION_INFORMATION* ctx) {
+  const CLIENT_ID cid = threads::getCid((PETHREAD)ctx->Object);
+  if (cid.UniqueProcess == g_service_pid) {
+    return;
+  }
+
+  on_handle_request_t callback;
+  callback.type = user_callback_type_e::handle_request;
+  callback.request = handle_request_type_e::dup_thread;
+  callback.process_id = (uint64_t)PsGetCurrentProcessId();
+  callback.target.thread.thread_id = (uint64_t)cid.UniqueThread;
+  callback.target.thread.process_id = (uint64_t)cid.UniqueProcess;
+  callback.access = ctx->Parameters->DuplicateHandleInformation.DesiredAccess;
+
+  service::invokeRequestCallback(callback);
+}
+
 OB_PREOP_CALLBACK_STATUS ob_pre_operation::Dispatcher(
-    void* params, OB_PRE_OPERATION_INFORMATION* info) {
+    void* params, OB_PRE_OPERATION_INFORMATION* ctx) {
   UNREFERENCED_PARAMETER(params);
 
-  on_handle_request_t ctx;
-  ctx.type = user_callback_type_e::handle_request;
-  ctx.process_id = (uint64_t)PsGetCurrentProcessId();
-
-  if (info->ObjectType == *PsProcessType) {
-    ctx.target.process.process_id =
-        (uint64_t)processes::getId((PEPROCESS)info->Object);
-
-    if (info->Operation == OB_OPERATION_HANDLE_CREATE) {
-      ctx.access = info->Parameters->CreateHandleInformation.DesiredAccess;
-      ctx.request = handle_request_type_e::open_process;
-    } else if (info->Operation == OB_OPERATION_HANDLE_DUPLICATE) {
-      ctx.access = info->Parameters->DuplicateHandleInformation.DesiredAccess;
-      ctx.request = handle_request_type_e::dup_process;
+  if (ctx->ObjectType == *PsProcessType) {
+    if (ctx->Operation == OB_OPERATION_HANDLE_CREATE) {
+      onOpenProcess(ctx);
+    } else if (ctx->Operation == OB_OPERATION_HANDLE_DUPLICATE) {
+      onDupProcess(ctx);
     }
-  } else if (info->ObjectType == *PsThreadType) {
-    const CLIENT_ID cid = threads::getCid((PETHREAD)info->Object);
-    if (cid.UniqueProcess == g_service_pid) {
-      goto end;
-    } 
-
-    ctx.target.thread.thread_id = (uint64_t)cid.UniqueThread;
-    ctx.target.thread.process_id = (uint64_t)cid.UniqueProcess;
-
-    if (info->Operation == OB_OPERATION_HANDLE_CREATE) {
-      ctx.access = info->Parameters->CreateHandleInformation.DesiredAccess;
-      ctx.request = handle_request_type_e::open_thread;
-    } else if (info->Operation == OB_OPERATION_HANDLE_DUPLICATE) {
-      ctx.access = info->Parameters->DuplicateHandleInformation.DesiredAccess;
-      ctx.request = handle_request_type_e::dup_thread;
+  } else if (ctx->ObjectType == *PsThreadType) {
+    if (ctx->Operation == OB_OPERATION_HANDLE_CREATE) {
+      onOpenThread(ctx);
+    } else if (ctx->Operation == OB_OPERATION_HANDLE_DUPLICATE) {
+      onDupThread(ctx);
     }
   }
 
-  service::invokeRequestCallback(ctx);
-  
-end:
   return OB_PREOP_SUCCESS;
 }
 

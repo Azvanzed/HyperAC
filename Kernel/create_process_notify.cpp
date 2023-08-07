@@ -6,12 +6,12 @@
 void create_process_notify::Dispatcher(HANDLE parent_id, HANDLE process_id,
                                        BOOLEAN create) {
   if (create) {
-    on_process_creation_t ctx;
-    ctx.type = user_callback_type_e::process_created;
-    ctx.parent_id = (uint64_t)parent_id;
-    ctx.process_id = (uint64_t)process_id;
+    on_process_creation_t callback;
+    callback.type = user_callback_type_e::process_created;
+    callback.parent_id = (uint64_t)parent_id;
+    callback.process_id = (uint64_t)process_id;
 
-    service::invokeRequestCallback(ctx);
+    service::invokeRequestCallback(callback);
   }
 }
 

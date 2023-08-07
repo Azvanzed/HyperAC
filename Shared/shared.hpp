@@ -49,8 +49,12 @@ struct on_handle_request_t : user_callback_t {
 
 struct on_thread_creation_t : user_callback_t {
   uint64_t start;
-  uint64_t thread_id;
   uint64_t process_id;
+
+  struct {
+    uint64_t thread_id;
+    uint64_t process_id;
+  }target;
 };
 
 struct on_process_creation_t : user_callback_t {
@@ -59,7 +63,11 @@ struct on_process_creation_t : user_callback_t {
 };
 
 struct on_image_load_t : user_callback_t {
-  uint64_t process_id;
   uint64_t base;
+  uint64_t process_id;
+  
+  struct {
+    uint64_t process_id;
+  }target;
   wchar_t path[512];
 };

@@ -12,17 +12,17 @@ void driverUnload(DRIVER_OBJECT* drv) {
   UNREFERENCED_PARAMETER(drv);
 
   if (!ioctl::Unregister()) {
-    print("failed to unregister Ioctl Callback");
+    print("failed to unregister Ioctl callback");
   } else if (!create_process_notify::Unregister()) {
-    print("failed to unregister CreateProcess Callback");
+    print("failed to unregister CreateProcess callback");
   } else if (!create_thread_notify::Unregister()) {
-    print("failed to unregister CreateThread Callback");
+    print("failed to unregister CreateThread callback");
   } else if (!load_image_notify::Unregister()) {
-    print("failed to unregister LoadImage Callback");
+    print("failed to unregister LoadImage callback");
   }
 
   ob_pre_operation::Unregister();
-  mmu::Release();
+  return mmu::Release();
 }
 
 NTSTATUS driverLoad(DRIVER_OBJECT* drv, UNICODE_STRING* reg) {
