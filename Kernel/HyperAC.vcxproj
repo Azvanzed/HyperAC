@@ -85,8 +85,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <DebuggerFlavor>DbgengKernelDebugger</DebuggerFlavor>
     <OutDir>$(SolutionDir)Build\</OutDir>
-    <IntDir>$(SolutionDir)Build\Intermediates\</IntDir>
-    <IncludePath>$(IncludePath);./;$(KMDF_INC_PATH)$(KMDF_VER_PATH)</IncludePath>
+    <IntDir>$(SolutionDir)Build\Intermediates\Kernel\</IntDir>
+    <IncludePath>$(SolutionDir)\Shared\;$(IncludePath);./;$(KMDF_INC_PATH)$(KMDF_VER_PATH)</IncludePath>
     <TargetName>HyperAC</TargetName>
     <EnableInf2cat>true</EnableInf2cat>
     <TimeStampServer>http://timestamp.verisign.com/scripts/timstamp.dll</TimeStampServer>
@@ -121,11 +121,12 @@
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <Optimization>Disabled</Optimization>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <FloatingPointModel>Fast</FloatingPointModel>
       <PreprocessorDefinitions>_VCRUNTIME_DISABLED_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ForcedIncludeFiles>globals.hpp;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <AdditionalOptions>/wd4005 %(AdditionalOptions)</AdditionalOptions>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <DriverSign>
       <FileDigestAlgorithm>sha256</FileDigestAlgorithm>
@@ -169,16 +170,26 @@
     <ClCompile Include="create_process_notify.cpp" />
     <ClCompile Include="create_thread_notify.cpp" />
     <ClCompile Include="entry.cpp" />
+    <ClCompile Include="ioctl.cpp" />
     <ClCompile Include="load_image_notify.cpp" />
+    <ClCompile Include="mmu.cpp" />
+    <ClCompile Include="modules.cpp" />
     <ClCompile Include="ob_pre_operation.cpp" />
+    <ClCompile Include="service.cpp" />
+    <ClCompile Include="threads.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="create_process_notify.hpp" />
     <ClInclude Include="create_thread_notify.hpp" />
     <ClInclude Include="docs.hpp" />
     <ClInclude Include="globals.hpp" />
+    <ClInclude Include="ioctl.hpp" />
     <ClInclude Include="load_image_notify.hpp" />
+    <ClInclude Include="mmu.hpp" />
+    <ClInclude Include="modules.hpp" />
     <ClInclude Include="ob_pre_operation.hpp" />
+    <ClInclude Include="service.hpp" />
+    <ClInclude Include="threads.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
