@@ -41,9 +41,7 @@ bool files::isSigned(const std::wstring& filepath) {
   wvt_data.dwUIChoice = WTD_UI_NONE;
   wvt_data.fdwRevocationChecks = WTD_REVOKE_NONE;
   wvt_data.dwUnionChoice = WTD_CHOICE_FILE;
-  wvt_data.dwStateAction = 0;
   wvt_data.dwProvFlags = WTD_SAFER_FLAG;
-  wvt_data.dwUIContext = 0;
   wvt_data.pFile = &filedata;
 
   GUID policy = WINTRUST_ACTION_GENERIC_VERIFY_V2;
