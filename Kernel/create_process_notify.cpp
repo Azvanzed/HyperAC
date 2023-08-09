@@ -3,16 +3,16 @@
 #include <modules.hpp>
 #include <service.hpp>
 
+
 void create_process_notify::Dispatcher(HANDLE parent_id, HANDLE process_id,
                                        BOOLEAN create) {
-  if (create) {
-    on_process_creation_t callback;
-    callback.type = user_callback_type_e::process_created;
-    callback.parent_id = (uint64_t)parent_id;
-    callback.process_id = (uint64_t)process_id;
+  on_process_creation_t callback;
+  callback.type = user_callback_type_e::process_created;
+  callback.created = create;
+  callback.parent_id = (uint64_t)parent_id;
+  callback.process_id = (uint64_t)process_id;
 
-    service::invokeRequestCallback(callback);
-  }
+  service::invokeRequestCallback(callback);
 }
 
 bool create_process_notify::Register() {

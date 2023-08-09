@@ -8,7 +8,7 @@
 #include <shared.hpp>
 
 void create_thread_notify::Dispatcher(HANDLE process_id, HANDLE thread_id, BOOLEAN create) {
-  if (create && g_service_pid != process_id) {
+  if (g_game_pid == process_id) {
     PETHREAD thread;
     if (!NT_SUCCESS(PsLookupThreadByThreadId(thread_id, &thread))) {
       return;
@@ -16,6 +16,7 @@ void create_thread_notify::Dispatcher(HANDLE process_id, HANDLE thread_id, BOOLE
 
     on_thread_creation_t callback;
     callback.type = user_callback_type_e::thread_created;
+    callback.create = create;
     callback.start = threads::getStartAddress(thread);
     callback.process_id = (uint64_t)PsGetCurrentProcessId();
     callback.target.thread_id = (uint64_t)thread_id;

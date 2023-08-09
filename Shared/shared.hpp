@@ -5,12 +5,22 @@
 #define IOCTL_HYPERAC_INITIALIZE \
   CTL_CODE(FILE_DEVICE_UNKNOWN, 0x700, METHOD_BUFFERED, FILE_ANY_ACCESS)
 
+#define IOCTL_HYPERAC_UNINITIALIZE \
+  CTL_CODE(FILE_DEVICE_UNKNOWN, 0x710, METHOD_BUFFERED, FILE_ANY_ACCESS)
 
 struct initialize_input_t {
   void* callback;
+  uint64_t process_id;
 };
 
-struct initialize_output {};
+struct initialize_output_t {
+
+};
+
+struct uninitialize_input_t {
+};
+
+struct uninitialize_output_t {};
 
 enum class user_callback_type_e : uint8_t {
   none,
@@ -48,6 +58,7 @@ struct on_handle_request_t : user_callback_t {
 };
 
 struct on_thread_creation_t : user_callback_t {
+  bool create;
   uint64_t start;
   uint64_t process_id;
 
@@ -58,6 +69,7 @@ struct on_thread_creation_t : user_callback_t {
 };
 
 struct on_process_creation_t : user_callback_t {
+  bool created;
   uint64_t parent_id;
   uint64_t process_id;
 };

@@ -22,7 +22,7 @@ NTSTATUS ioctl::Dispatcher(DEVICE_OBJECT* drv, IRP* irp) {
 
       g_callback = input->callback;
       g_service = IoGetCurrentProcess();
-      g_service_pid = PsGetCurrentProcessId();
+      g_game_pid = (HANDLE)input->process_id;
 
       if (!ob_pre_operation::Register()) {
         print("failed to register a ObPreOperation Callback");
@@ -42,13 +42,27 @@ NTSTATUS ioctl::Dispatcher(DEVICE_OBJECT* drv, IRP* irp) {
         break;
       }
 
-      irp->IoStatus.Information = sizeof(initialize_output);
+      irp->IoStatus.Information = sizeof(initialize_output_t);
+      status = STATUS_SUCCESS;
+    } break;
+    case IOCTL_HYPERAC_UNINITIALIZE: {
+      ob_pre_operation::Unregister();
+
+      if (!create_process_notify::Unregister()) {
+        print("failed to unregister CreateProcess callback");
+      } else if (!create_thread_notify::Unregister()) {
+        print("failed to unregister CreateThread callback");
+      } else if (!load_image_notify::Unregister()) {
+        print("failed to unregister LoadImage callback");
+      }
+
+      irp->IoStatus.Information = sizeof(uninitialize_output_t);
       status = STATUS_SUCCESS;
     } break;
   }
 
-  irp->IoStatus.Status = status;
 
+  irp->IoStatus.Status = status;
   IofCompleteRequest(irp, IO_NO_INCREMENT);
   return status;
 }

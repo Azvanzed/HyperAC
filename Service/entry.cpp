@@ -7,33 +7,19 @@
 #include <ioctl.hpp>
 #include <iostream>
 #include <string>
-#include <TlHelp32.h>
 
 
-int main() {
+
+int main(int, char** argv) {
+  game::g_process_id = atoi(argv[1]);
+
   initialize_input_t input;
   input.callback = &callbacks::Dispatcher;
+  input.process_id = game::g_process_id;
 
-  initialize_output output;
+  initialize_output_t output;
   ioctl::sendDriver(IOCTL_HYPERAC_INITIALIZE, input, &output);
 
-  STARTUPINFO startup;
-  memset(&startup, 0, sizeof(STARTUPINFO));
-
-  startup.cb = sizeof(STARTUPINFO);
-
-  PROCESS_INFORMATION info;
-  CreateProcess(L"C:\\Windows\\System32\\notepad.exe", nullptr, nullptr,
-                nullptr, false, 0, nullptr, nullptr, &startup, &info);
-
-  game::g_process_id = info.dwProcessId;
-
-  CloseHandle(info.hProcess);
-  CloseHandle(info.hThread);
-
-  while (true) {
-    Sleep(100);
-  }
-
+  Sleep(-1);
   return 0;
 }

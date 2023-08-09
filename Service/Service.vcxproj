@@ -147,6 +147,7 @@
     <ClCompile Include="entry.cpp" />
     <ClCompile Include="ioctl.cpp" />
     <ClCompile Include="files.cpp" />
+    <ClCompile Include="scm.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="docs.hpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="globals.hpp" />
     <ClInclude Include="files.hpp" />
     <ClInclude Include="ioctl.hpp" />
+    <ClInclude Include="scm.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

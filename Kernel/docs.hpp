@@ -439,4 +439,6 @@ NTSTATUS RtlCreateUserThread(HANDLE ProcessHandle,
                              SIZE_T MaximumStackSize, SIZE_T CommittedStackSize,
                              PVOID StartAddress, PVOID StartParameter,
                              PHANDLE ThreadHandle, PCLIENT_ID ClientId);
+NTKERNELAPI void PsReleaseProcessExitSynchronization(PEPROCESS Process);
+NTKERNELAPI NTSTATUS PsAcquireProcessExitSynchronization(PEPROCESS Process);
 }

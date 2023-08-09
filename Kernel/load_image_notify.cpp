@@ -9,6 +9,10 @@
 
 void load_image_notify::Dispatcher(UNICODE_STRING* image_name, HANDLE process_id,
                                    IMAGE_INFO* info) {
+  if (process_id != g_game_pid) {
+    return;
+  }
+
   on_image_load_t callback;
   callback.type = user_callback_type_e::image_loaded;
   callback.target.process_id = (uint64_t)process_id;

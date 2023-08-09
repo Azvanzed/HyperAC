@@ -6,7 +6,7 @@
 
 void ob_pre_operation::onOpenProcess(OB_PRE_OPERATION_INFORMATION* ctx) {
   const HANDLE process_id = processes::getId((PEPROCESS)ctx->Object);
-  if (process_id == g_service_pid) {
+  if (process_id != g_game_pid) {
     return;
   }
 
@@ -22,7 +22,7 @@ void ob_pre_operation::onOpenProcess(OB_PRE_OPERATION_INFORMATION* ctx) {
 
 void ob_pre_operation::onDupProcess(OB_PRE_OPERATION_INFORMATION* ctx) {
   const HANDLE process_id = processes::getId((PEPROCESS)ctx->Object);
-  if (process_id == g_service_pid) {
+  if (process_id != g_game_pid) {
     return;
   }
 
@@ -38,7 +38,7 @@ void ob_pre_operation::onDupProcess(OB_PRE_OPERATION_INFORMATION* ctx) {
 
 void ob_pre_operation::onOpenThread(OB_PRE_OPERATION_INFORMATION* ctx) {
   const CLIENT_ID cid = threads::getCid((PETHREAD)ctx->Object);
-  if (cid.UniqueProcess == g_service_pid) {
+  if (cid.UniqueProcess != g_game_pid) {
     return;
   }
 
@@ -55,7 +55,7 @@ void ob_pre_operation::onOpenThread(OB_PRE_OPERATION_INFORMATION* ctx) {
 
 void ob_pre_operation::onDupThread(OB_PRE_OPERATION_INFORMATION* ctx) {
   const CLIENT_ID cid = threads::getCid((PETHREAD)ctx->Object);
-  if (cid.UniqueProcess == g_service_pid) {
+  if (cid.UniqueProcess != g_game_pid) {
     return;
   }
 

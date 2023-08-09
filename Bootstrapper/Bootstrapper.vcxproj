@@ -72,8 +72,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)Build\</OutDir>
-    <IntDir>$(SolutionDir)Build\Intermediates\Service\</IntDir>
-    <TargetName>HydraAC_CG</TargetName>
+    <IntDir>$(SolutionDir)Build\Intermediates\Bootstrapper\</IntDir>
+    <TargetName>HyperAC_CG</TargetName>
     <IncludePath>.\;$(SolutionDir)\Shared\;$(IncludePath)</IncludePath>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
@@ -134,7 +134,7 @@
       <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -145,11 +145,13 @@
   <ItemGroup>
     <ClCompile Include="entry.cpp" />
     <ClCompile Include="process.cpp" />
+    <ClCompile Include="scm.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="docs.hpp" />
     <ClInclude Include="globals.hpp" />
     <ClInclude Include="process.hpp" />
+    <ClInclude Include="scm.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
