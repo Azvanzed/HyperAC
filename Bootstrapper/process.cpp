@@ -8,6 +8,5 @@ bool process::Create(const std::wstring& filepath, const std::wstring& args,
   si.cb = sizeof(STARTUPINFO);
 
   std::wstring cmd = L"\"" + filepath + L"\" " + args;
-  return CreateProcess(nullptr, cmd.data(), nullptr, nullptr, false, 0, nullptr,
-                       nullptr, &si, pi);
+  return CreateProcess(nullptr, cmd.data(), nullptr, nullptr, false, 0, nullptr, nullptr, &si, pi);
 }

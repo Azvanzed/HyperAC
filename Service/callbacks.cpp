@@ -10,7 +10,6 @@
 #include <ioctl.hpp>
 
 void callbacks::Dispatcher(user_callback_t* ctx) {
-
   switch (ctx->type) {
     case user_callback_type_e::image_loaded: {
       on_image_load_t* image = (on_image_load_t*)ctx;
@@ -41,7 +40,6 @@ void callbacks::Dispatcher(user_callback_t* ctx) {
       on_handle_request_t* handle = (on_handle_request_t*)ctx;
 
       game::g_handles.push_back(*handle);
-
     } break;
   }
 

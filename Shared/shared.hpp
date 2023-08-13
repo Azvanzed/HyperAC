@@ -76,6 +76,7 @@ struct on_process_creation_t : user_callback_t {
 
 struct on_image_load_t : user_callback_t {
   uint64_t base;
+  size_t size;
   uint64_t process_id;
   
   struct {
