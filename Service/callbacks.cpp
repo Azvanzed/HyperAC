@@ -20,30 +20,27 @@ void callbacks::Dispatcher(user_callback_t* ctx) {
 
       if (image->process_id == game::g_process_id) {
         printf("%S: %i\n", dospath.data(), files::isSigned(dospath));
-
       }
       
-      //game::g_images.push_back(*image);
+      game::g_images.push_back(*image);
     } break;
     case user_callback_type_e::thread_created: {
-      //game::g_threads.push_back(*(on_thread_creation_t*)ctx);
+      on_thread_creation_t* thread = (on_thread_creation_t*)ctx;
+
+      game::g_threads.push_back(*thread);
     } break;
     case user_callback_type_e::process_created: {
       on_process_creation_t* process = (on_process_creation_t*)ctx;
       if (game::g_process_id == process->process_id && !process->created) {
-        initialize_input_t input;
-        initialize_output_t output;
-        ioctl::sendDriver(IOCTL_HYPERAC_UNINITIALIZE, input, &output);
-        scm::Destroy(L"HyperAC");
-        exit(0);
+        VEH_TRIGGER();
       }
 
-      //game::g_processes.push_back(*process);
+      game::g_processes.push_back(*process);
     } break;
     case user_callback_type_e::handle_request: {
       on_handle_request_t* handle = (on_handle_request_t*)ctx;
 
-      //game::g_handles.push_back(*handle);
+      game::g_handles.push_back(*handle);
 
     } break;
   }

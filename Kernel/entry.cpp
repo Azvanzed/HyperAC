@@ -20,8 +20,8 @@ void driverUnload(DRIVER_OBJECT* drv) {
   } else if (!load_image_notify::Unregister()) {
     print("failed to unregister LoadImage callback");
   }
-
   ob_pre_operation::Unregister();
+
   return mmu::Release();
 }
 

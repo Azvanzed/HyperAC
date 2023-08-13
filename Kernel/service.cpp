@@ -5,8 +5,6 @@
 #include <docs.hpp>
 
 bool service::invokeRequestCallbackEx(void* buffer, const size_t buffer_size) {
-  _InterlockedIncrement(&g_service_refs);
-
   KeAttachProcess(g_service);
   PsAcquireProcessExitSynchronization(g_service);
   
@@ -17,7 +15,6 @@ bool service::invokeRequestCallbackEx(void* buffer, const size_t buffer_size) {
                                           PAGE_READWRITE))) {
     PsReleaseProcessExitSynchronization(g_service);
     KeDetachProcess();
-    _InterlockedDecrement(&g_service_refs);
     return false;
   }
 
@@ -30,6 +27,5 @@ bool service::invokeRequestCallbackEx(void* buffer, const size_t buffer_size) {
 
   PsReleaseProcessExitSynchronization(g_service);
   KeDetachProcess();
-  _InterlockedDecrement(&g_service_refs);
   return result;
 }

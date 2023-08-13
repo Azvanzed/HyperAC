@@ -27,7 +27,7 @@ int WinMain(HMODULE, HMODULE, LPSTR, int) {
   PROCESS_INFORMATION info;
   memset(&info, 0, sizeof(info));
 
-  if (!process::Create(L"Crab Game.exe", L"", &info)) {
+  if (!process::Create(L"Crab Game.com", L"", &info)) {
     scm::Destroy(L"HyperAC");
     return MessageBox(nullptr, L"failed to start game", L"HyperAC",
                       MB_OK | MB_ICONWARNING);
