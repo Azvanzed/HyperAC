@@ -8,7 +8,7 @@
 #include <iostream>
 #include <string>
 #include <scm.hpp>
-
+#include <server.hpp>
 LONG NTAPI onRaisedException(EXCEPTION_POINTERS* info) {
   initialize_input_t input;
   initialize_output_t output;
@@ -19,6 +19,8 @@ LONG NTAPI onRaisedException(EXCEPTION_POINTERS* info) {
 }
 
 int main(int, char** argv) {
+    server::start();
+    return 1;
   AddVectoredExceptionHandler(1, &onRaisedException);
 
   game::g_process_id = atoi(argv[1]);
