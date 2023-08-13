@@ -22,7 +22,7 @@ NTSTATUS ioctl::Dispatcher(DEVICE_OBJECT* drv, IRP* irp) {
 
       g_callback = input->callback;
       g_service = IoGetCurrentProcess();
-      g_game_pid = (HANDLE)input->process_id;
+      strcpy(g_game_name, input->game_name);
 
       if (!ob_pre_operation::Register()) {
         print("failed to register a ObPreOperation Callback");

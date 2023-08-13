@@ -10,7 +10,7 @@
 
 struct initialize_input_t {
   void* callback;
-  uint64_t process_id;
+  char game_name[15];
 };
 
 struct initialize_output_t {
@@ -24,9 +24,9 @@ struct uninitialize_output_t {};
 
 enum class user_callback_type_e : uint8_t {
   none,
+  game_process,
   image_loaded,
   thread_created,
-  process_created,
   handle_request,
 };
 
@@ -68,7 +68,7 @@ struct on_thread_creation_t : user_callback_t {
   }target;
 };
 
-struct on_process_creation_t : user_callback_t {
+struct on_game_process_t : user_callback_t {
   bool created;
   uint64_t parent_id;
   uint64_t process_id;

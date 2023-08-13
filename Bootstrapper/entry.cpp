@@ -22,9 +22,8 @@ int WinMain(HMODULE, HMODULE, LPSTR, int) {
         return MessageBox(nullptr, L"failed to start service", L"HyperAC", MB_OK | MB_ICONWARNING);
     }
 
-
     PROCESS_INFORMATION info;
-    memset(&info, 0, sizeof(info));
+    memset(&info, 0, sizeof(PROCESS_INFORMATION));
 
     if (!process::Create(service_path, L"", &info)) {
         scm::Destroy(L"HyperAC");
@@ -33,6 +32,8 @@ int WinMain(HMODULE, HMODULE, LPSTR, int) {
 
     CloseHandle(info.hProcess);
     CloseHandle(info.hThread);
+
+    Sleep(2000);
 
     if (!process::Create(game_path, L"", &info)) {
         scm::Destroy(L"HyperAC");

@@ -17,9 +17,7 @@ void callbacks::Dispatcher(user_callback_t* ctx) {
       const std::wstring& dospath = files::toDosPath(image->path);
       wcscpy(image->path, dospath.data());
 
-      if (image->process_id == game::g_process_id) {
-        printf("%S: %i\n", dospath.data(), files::isSigned(dospath));
-      }
+      printf("%S: %i\n", dospath.data(), files::isSigned(dospath));
       
       game::g_images.push_back(*image);
     } break;
@@ -28,13 +26,14 @@ void callbacks::Dispatcher(user_callback_t* ctx) {
 
       game::g_threads.push_back(*thread);
     } break;
-    case user_callback_type_e::process_created: {
-      on_process_creation_t* process = (on_process_creation_t*)ctx;
-      if (game::g_process_id == process->process_id && !process->created) {
-        VEH_TRIGGER();
-      }
+    case user_callback_type_e::game_process: {
+        on_game_process_t* game = (on_game_process_t*)ctx;
 
-      game::g_processes.push_back(*process);
+        if (game->created) {
+            game::g_process_id = game->process_id;
+        }
+
+        VEH_TRIGGER();
     } break;
     case user_callback_type_e::handle_request: {
       on_handle_request_t* handle = (on_handle_request_t*)ctx;
