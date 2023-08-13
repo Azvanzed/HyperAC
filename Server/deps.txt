@@ -1,0 +1,4 @@
+to prepare the linux server:
+libs:
+- libmysqlcppconn-dev
+- libboost-all-dev
