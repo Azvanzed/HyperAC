@@ -153,8 +153,9 @@
     <ClCompile Include="entry.cpp" />
     <ClCompile Include="ioctl.cpp" />
     <ClCompile Include="files.cpp" />
+    <ClCompile Include="processes.cpp" />
+    <ClCompile Include="processes.hpp" />
     <ClCompile Include="scm.cpp" />
-    <ClCompile Include="server.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="docs.hpp" />
@@ -163,7 +164,6 @@
     <ClInclude Include="files.hpp" />
     <ClInclude Include="ioctl.hpp" />
     <ClInclude Include="scm.hpp" />
-    <ClInclude Include="server.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

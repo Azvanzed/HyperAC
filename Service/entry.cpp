@@ -8,7 +8,9 @@
 #include <iostream>
 #include <string>
 #include <scm.hpp>
-#include <server.hpp>
+#include <processes.hpp>
+
+
 LONG NTAPI onRaisedException(EXCEPTION_POINTERS* info) {
   initialize_input_t input;
   initialize_output_t output;
@@ -19,8 +21,6 @@ LONG NTAPI onRaisedException(EXCEPTION_POINTERS* info) {
 }
 
 int main(int, char** argv) {
-    server::start();
-    return 1;
   AddVectoredExceptionHandler(1, &onRaisedException);
 
   initialize_input_t input;
@@ -34,24 +34,15 @@ int main(int, char** argv) {
 
   /* detection thread */
   while (true) {
-    auto images = game::g_images;
-    auto threads = game::g_threads;
+      Sleep(100);
 
-    for (const auto& thread : threads) {
-        bool is_backed = false;
-        for (const auto& image : images) {
-            if (thread.start >= image.base && thread.start < (image.base + image.size)) {
-                is_backed = true;
-                break;
-            }
-        }
-
-        if (!is_backed) {
-            printf("illegal thread created! 0x%llx\n", thread.start);
-        }
-
-        Sleep(100);
-    }
+      /* refresh images */
+      for (size_t i = 0; i < game::g_images.size(); ++i) {
+          on_image_load_t* image = &game::g_images[i];
+          if (!processes::isDllLoaded(handle, image->base)) {
+              game::g_images.erase(game::g_images.begin() + i);
+          }
+      }
   }
 
   CloseHandle(handle);
