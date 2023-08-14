@@ -3,7 +3,6 @@
 #include <filesystem>
 #include <WinTrust.h>
 #include <softpub.h>
-
 std::wstring files::toDosPath(const std::wstring& devicepath) {
   wchar_t drives[256];
   if (!GetLogicalDriveStringsW(sizeof(drives) / sizeof(wchar_t) - 1, drives)) {
@@ -26,24 +25,23 @@ std::wstring files::toDosPath(const std::wstring& devicepath) {
 
   return L"";
 }
-
 bool files::isSigned(const std::wstring& filepath) {
-  WINTRUST_FILE_INFO filedata;
-  memset(&filedata, 0, sizeof(WINTRUST_FILE_INFO));
+    WINTRUST_FILE_INFO filedata;
+    memset(&filedata, 0, sizeof(WINTRUST_FILE_INFO));
 
-  filedata.cbStruct = sizeof(WINTRUST_FILE_INFO);
-  filedata.pcwszFilePath = filepath.data();
+    filedata.cbStruct = sizeof(WINTRUST_FILE_INFO);
+    filedata.pcwszFilePath = filepath.data();
 
-  WINTRUST_DATA wvt_data;
-  memset(&wvt_data, 0, sizeof(WINTRUST_DATA));
+    WINTRUST_DATA wvt_data;
+    memset(&wvt_data, 0, sizeof(WINTRUST_DATA));
 
-  wvt_data.cbStruct = sizeof(WINTRUST_DATA);
-  wvt_data.dwUIChoice = WTD_UI_NONE;
-  wvt_data.fdwRevocationChecks = WTD_REVOKE_NONE;
-  wvt_data.dwUnionChoice = WTD_CHOICE_FILE;
-  wvt_data.dwProvFlags = WTD_SAFER_FLAG;
-  wvt_data.pFile = &filedata;
+    wvt_data.cbStruct = sizeof(WINTRUST_DATA);
+    wvt_data.dwUIChoice = WTD_UI_NONE;
+    wvt_data.fdwRevocationChecks = WTD_REVOKE_WHOLECHAIN;
+    wvt_data.dwUnionChoice = WTD_CHOICE_FILE;
+    wvt_data.dwProvFlags = WTD_SAFER_FLAG;
+    wvt_data.pFile = &filedata;
 
-  GUID policy = WINTRUST_ACTION_GENERIC_VERIFY_V2;
-  return WinVerifyTrust((HWND)-1, &policy, &wvt_data) == ERROR_SUCCESS;
+    GUID policy = WINTRUST_ACTION_GENERIC_VERIFY_V2;
+    return WinVerifyTrust((HWND)-1, &policy, &wvt_data) == ERROR_SUCCESS;
 }
