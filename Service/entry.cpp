@@ -8,6 +8,9 @@
 #include <iostream>
 #include <string>
 #include <scm.hpp>
+#include <processes.hpp>
+
+
 #include <server.hpp>
 
 LONG NTAPI onRaisedException(EXCEPTION_POINTERS* info) {
@@ -20,7 +23,8 @@ LONG NTAPI onRaisedException(EXCEPTION_POINTERS* info) {
 }
 
 int main(int, char** argv) {
-
+    server::start();
+    return 1;
   AddVectoredExceptionHandler(1, &onRaisedException);
 
   initialize_input_t input;

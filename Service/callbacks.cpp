@@ -23,17 +23,17 @@ void callbacks::Dispatcher(user_callback_t* ctx) {
     } break;
     case user_callback_type_e::thread_created: {
       on_thread_creation_t* thread = (on_thread_creation_t*)ctx;
-
+      printf("start: 0x%llx\n", thread->start);
       game::g_threads.push_back(*thread);
     } break;
     case user_callback_type_e::game_process: {
         on_game_process_t* game = (on_game_process_t*)ctx;
 
-        if (game->created) {
-            game::g_process_id = game->process_id;
+        if (!game->created) {
+            VEH_TRIGGER();
         }
 
-        VEH_TRIGGER();
+        game::g_process_id = game->process_id;
     } break;
     case user_callback_type_e::handle_request: {
       on_handle_request_t* handle = (on_handle_request_t*)ctx;
