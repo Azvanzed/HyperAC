@@ -55,6 +55,20 @@ int32_t crt::stricmp(const char* a, const char* b) {
 
     return result;
 }
+int32_t crt::memcmp(const void* s1, const void* s2, size_t n)
+{
+    unsigned char u1, u2;
+    unsigned char* p1 = (unsigned char*)s1;
+    unsigned char* p2 = (unsigned char*)s2;
+    for (; n--; p1++, p2++) {
+        u1 = *p1;
+        u2 = *p2;
+        if (u1 != u2) {
+            return (u1 - u2);
+        }
+    }
+    return 0;
+}
 
 int32_t crt::wcslen(const wchar_t* str) {
     int32_t len = 0;
