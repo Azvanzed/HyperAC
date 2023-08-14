@@ -8,6 +8,9 @@
 #define IOCTL_HYPERAC_UNINITIALIZE \
   CTL_CODE(FILE_DEVICE_UNKNOWN, 0x710, METHOD_BUFFERED, FILE_ANY_ACCESS)
 
+#define IOCTL_HYPERAC_MANUAL_MAP \
+  CTL_CODE(FILE_DEVICE_UNKNOWN, 0x720, METHOD_BUFFERED, FILE_ANY_ACCESS)
+
 struct initialize_input_t {
   void* callback;
   char game_name[15];
@@ -21,6 +24,18 @@ struct uninitialize_input_t {
 };
 
 struct uninitialize_output_t {};
+
+struct manual_map_input_t {
+    uint64_t process_id;
+    uint64_t load_library;
+    uint64_t get_proc_address;
+    size_t size;
+    uint8_t data[];
+};
+
+struct manual_map_output_t {
+    uint64_t base;
+};
 
 enum class user_callback_type_e : uint8_t {
   none,

@@ -59,6 +59,9 @@ NTSTATUS ioctl::Dispatcher(DEVICE_OBJECT* drv, IRP* irp) {
       irp->IoStatus.Information = sizeof(uninitialize_output_t);
       status = STATUS_SUCCESS;
     } break;
+    case IOCTL_HYPERAC_MANUAL_MAP: {
+
+    } break;
   }
 
 

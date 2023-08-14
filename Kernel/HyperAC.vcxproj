@@ -179,6 +179,7 @@
     <ClCompile Include="entry.cpp" />
     <ClCompile Include="ioctl.cpp" />
     <ClCompile Include="load_image_notify.cpp" />
+    <ClCompile Include="manual_mapper.cpp" />
     <ClCompile Include="mmu.cpp" />
     <ClCompile Include="modules.cpp" />
     <ClCompile Include="ob_pre_operation.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="globals.hpp" />
     <ClInclude Include="ioctl.hpp" />
     <ClInclude Include="load_image_notify.hpp" />
+    <ClInclude Include="manual_mapper.hpp" />
     <ClInclude Include="mmu.hpp" />
     <ClInclude Include="modules.hpp" />
     <ClInclude Include="ob_pre_operation.hpp" />

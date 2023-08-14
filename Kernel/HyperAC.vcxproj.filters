@@ -12,6 +12,7 @@
     <ClCompile Include="threads.cpp" />
     <ClCompile Include="service.cpp" />
     <ClCompile Include="processes.cpp" />
+    <ClCompile Include="manual_mapper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="globals.hpp" />
@@ -26,5 +27,6 @@
     <ClInclude Include="threads.hpp" />
     <ClInclude Include="service.hpp" />
     <ClInclude Include="processes.hpp" />
+    <ClInclude Include="manual_mapper.hpp" />
   </ItemGroup>
 </Project>
