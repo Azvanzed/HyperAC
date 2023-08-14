@@ -126,6 +126,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -167,18 +168,14 @@
   <ItemGroup>
     <ClCompile Include="crt.cpp" />
     <ClCompile Include="entry.cpp" />
-    <ClCompile Include="Global\global.cpp" />
-    <ClCompile Include="Integrity\integritycheck.cpp" />
-    <ClCompile Include="MemOperations\mem.cpp" />
+    <ClCompile Include="integrity.cpp" />
     <ClCompile Include="win.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="crt.hpp" />
     <ClInclude Include="docs.hpp" />
-    <ClInclude Include="Global\global.hpp" />
     <ClInclude Include="globals.hpp" />
-    <ClInclude Include="Integrity\integritycheck.hpp" />
-    <ClInclude Include="MemOperations\mem.hpp" />
+    <ClInclude Include="integrity.hpp" />
     <ClInclude Include="win.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -10,7 +10,6 @@
 inline void* g_callback;
 inline HANDLE g_game_pid = 0;
 inline char g_game_name[15];
-
 inline PEPROCESS g_service = nullptr;
 
 #define TAG 'HPAC'
