@@ -163,9 +163,3 @@ typedef struct _IMAGE_NT_HEADERS {
     IMAGE_OPTIONAL_HEADER OptionalHeader;
 } IMAGE_NT_HEADERS, * PIMAGE_NT_HEADERS;
 
-int MessageBox(
-    void* hWnd,
-    wchar_t* lpText,
-    wchar_t* lpCaption,
-    uint32_t    uType
-);

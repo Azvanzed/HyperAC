@@ -1,8 +1,8 @@
 #include <cstdint>
-#include <docs.hpp>
+#include <Windows.h>
 #include <win.hpp>
 
 void DllMain(uint64_t service_callback) {
-	API(MessageBox)(0, 0, 0, 0);
+	API(MessageBoxW)(0, 0, 0, 0);
 }
 
