@@ -73,7 +73,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>.\;$(SolutionDir)\Shared\;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)Build\</OutDir>
-    <IntDir>$(SolutionDir)Build\Intermediates\</IntDir>
+    <IntDir>$(SolutionDir)Build\Intermediates\Internal\</IntDir>
     <TargetName>HyperAC</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

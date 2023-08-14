@@ -27,14 +27,11 @@ struct uninitialize_output_t {};
 
 struct manual_map_input_t {
     uint64_t process_id;
-    uint64_t load_library;
-    uint64_t get_proc_address;
-    size_t size;
-    uint8_t data[];
+    void* data;
 };
 
 struct manual_map_output_t {
-    uint64_t base;
+    uint64_t ep;
 };
 
 enum class user_callback_type_e : uint8_t {
