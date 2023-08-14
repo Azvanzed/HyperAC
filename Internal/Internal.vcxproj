@@ -75,6 +75,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>.\;$(SolutionDir)\Shared\;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)Build\</OutDir>
+    <IntDir>$(SolutionDir)Build\Intermediates\</IntDir>
+    <TargetName>HyperAC</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -130,7 +133,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
@@ -139,6 +142,10 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <ForcedIncludeFiles>globals.hpp;shared.hpp;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <FloatingPointModel>Fast</FloatingPointModel>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -152,14 +159,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="crt.cpp" />
-    <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="entry.cpp" />
     <ClCompile Include="win.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="crt.hpp" />
     <ClInclude Include="docs.hpp" />
-    <ClInclude Include="entry.hpp" />
+    <ClInclude Include="globals.hpp" />
     <ClInclude Include="win.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -17,7 +17,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Bootstrapper", "Bootstrappe
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server", "Server\Server.vcxproj", "{9608E070-73AA-4E6F-BDFB-34FBA8741AF4}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DLL", "DLL\DLL.vcxproj", "{C5EB9D66-A029-4BF9-9F58-4F821009DAAE}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Internal", "Internal\Internal.vcxproj", "{C5EB9D66-A029-4BF9-9F58-4F821009DAAE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
