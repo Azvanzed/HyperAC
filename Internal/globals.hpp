@@ -7,7 +7,7 @@ inline void* g_service_callback = nullptr;
 
 #ifdef _DEBUG
 #include <iostream>
-#define LOG(x) std::cout << x << std::endl;
+#define LOG(fmt, ...) printf(fmt "\n", __VA_ARGS__)
 #else
-#define LOG(x)
+#define LOG(fmt, ...)
 #endif

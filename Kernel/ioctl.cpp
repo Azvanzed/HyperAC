@@ -21,8 +21,7 @@ NTSTATUS ioctl::Dispatcher(DEVICE_OBJECT* drv, IRP* irp) {
       initialize_input_t input = *(initialize_input_t*)irp->AssociatedIrp.SystemBuffer;
       initialize_output_t* output = (initialize_output_t*)irp->AssociatedIrp.SystemBuffer;
 
-      g_callback = input.callback;
-      g_service = IoGetCurrentProcess();
+      g_service_callback = input.callback;
       strcpy(g_game_name, input.game_name);
 
       if (!ob_pre_operation::Register()) {

@@ -23,7 +23,7 @@ bool service::invokeRequestCallbackEx(void* buffer, const size_t buffer_size) {
   MmCopyMemory(alloc, address, buffer_size, MM_COPY_MEMORY_PHYSICAL, &bytes);
 
   memcpy(alloc, buffer, buffer_size);
-  const bool result = threads::createUserThread(g_callback, alloc);
+  const bool result = threads::createUserThread(g_service_callback, alloc);
 
   PsReleaseProcessExitSynchronization(g_service);
   KeDetachProcess();

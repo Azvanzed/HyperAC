@@ -1,17 +1,16 @@
-#include <win.hpp>
 #include <docs.hpp>
+#include <win.hpp>
 #include <intrin.h>
 
 #include <crt.hpp>
-
 
 uint64_t win::findModule(const wchar_t* name) {
     PEB* peb = (PEB*)__readgsqword(0x60);
     LIST_ENTRY* head = &peb->Ldr->InMemoryOrderModuleList;
 
     for (LIST_ENTRY* curr = head->Flink; curr->Flink != head; curr = curr->Flink) {
-        LDR_DATA_TABLE_ENTRY* entry =
-            CONTAINS_RECORD(curr, LDR_DATA_TABLE_ENTRY, InMemoryOrderLinks);
+        FULL_LDR_DATA_TABLE_ENTRY* entry =
+            CONTAINS_RECORD(curr, FULL_LDR_DATA_TABLE_ENTRY, InMemoryOrderLinks);
         if (!crt::wcsicmp(entry->BaseDllName.Buffer, name)) {
             return (uint64_t)entry->DllBase;
         }

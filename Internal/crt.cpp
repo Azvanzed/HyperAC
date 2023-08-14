@@ -87,3 +87,9 @@ int32_t crt::strlen(const char* str) {
 
     return len;
 }
+
+void crt::strcpy(char* a, const char* b) {
+    for (size_t i = 0; i < strlen(a); ++i) {
+        a[i] = b[i];
+    }
+}

@@ -84,7 +84,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>..\Shared\mysql\;..\Shared;.\;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)Build\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(ProjectDir)Build\Intermediates\$(Platform)\$(Configuration)\</IntDir>
+    <IntDir>$(ProjectDir)Build\Intermediates\Server\</IntDir>
     <RemoteIntRelDir>$(RemoteProjectRelDir)/obj/$(Platform)/$(Configuration)</RemoteIntRelDir>
     <RemoteOutRelDir>$(RemoteProjectRelDir)/bin/$(Platform)/$(Configuration)</RemoteOutRelDir>
   </PropertyGroup>

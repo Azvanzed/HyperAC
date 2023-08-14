@@ -34,7 +34,7 @@ struct manual_map_output_t {
     uint64_t ep;
 };
 
-enum class user_callback_type_e : uint8_t {
+enum class service_callback_type_e : uint8_t {
   none,
   game_process,
   image_loaded,
@@ -42,8 +42,8 @@ enum class user_callback_type_e : uint8_t {
   handle_request,
 };
 
-struct user_callback_t {
-  user_callback_type_e type;
+struct service_callback_t {
+    service_callback_type_e type;
 };
 
 enum class handle_request_type_e : uint8_t {
@@ -54,7 +54,7 @@ enum class handle_request_type_e : uint8_t {
 	dup_thread,
 };
 
-struct on_handle_request_t : user_callback_t {
+struct on_handle_request_t : service_callback_t {
   handle_request_type_e request;
   uint64_t process_id;
   union {
@@ -69,7 +69,7 @@ struct on_handle_request_t : user_callback_t {
   uint32_t access;
 };
 
-struct on_thread_creation_t : user_callback_t {
+struct on_thread_creation_t : service_callback_t {
   bool create;
   uint64_t start;
   uint64_t process_id;
@@ -80,13 +80,13 @@ struct on_thread_creation_t : user_callback_t {
   }target;
 };
 
-struct on_game_process_t : user_callback_t {
+struct on_game_process_t : service_callback_t {
   bool created;
   uint64_t parent_id;
   uint64_t process_id;
 };
 
-struct on_image_load_t : user_callback_t {
+struct on_image_load_t : service_callback_t {
   uint64_t base;
   size_t size;
   uint64_t process_id;

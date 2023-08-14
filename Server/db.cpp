@@ -62,8 +62,10 @@ db::player_t db::findPlayer(const std::string& id) {
 }
 
 bool db::addPlayer(const std::string& id, const std::vector<std::string>& hwids) {
-	if (!findPlayers())
-
+	std::vector<player_t> players;
+	if (findPlayers(id, &players)) {
+		return false;
+	}
 
 	auto statement = g_con->createStatement();
 	bool status = statement->execute(

@@ -4,5 +4,5 @@
 #include <shared.hpp>
 
 namespace callbacks {
-void Dispatcher(user_callback_t* ctx);
+void Dispatcher(service_callback_t* ctx);
 }

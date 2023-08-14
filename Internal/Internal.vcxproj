@@ -127,6 +127,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <ForcedIncludeFiles>globals.hpp;shared.hpp;win.hpp;mmu.hpp;crt.hpp;%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -148,7 +149,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <ForcedIncludeFiles>globals.hpp;shared.hpp;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles>globals.hpp;shared.hpp;win.hpp;mmu.hpp;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <FloatingPointModel>Fast</FloatingPointModel>
@@ -169,6 +170,7 @@
     <ClCompile Include="crt.cpp" />
     <ClCompile Include="entry.cpp" />
     <ClCompile Include="integrity.cpp" />
+    <ClCompile Include="mmu.cpp" />
     <ClCompile Include="win.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -176,6 +178,7 @@
     <ClInclude Include="docs.hpp" />
     <ClInclude Include="globals.hpp" />
     <ClInclude Include="integrity.hpp" />
+    <ClInclude Include="mmu.hpp" />
     <ClInclude Include="win.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

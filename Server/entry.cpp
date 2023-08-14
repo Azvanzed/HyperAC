@@ -13,7 +13,7 @@ int main() {
     db::g_con->setSchema("HyperAC");
 
     std::vector<db::player_t> players;
-    printf("find: %i\n", db::addPlayer("the best player id ever", { "hehe", "hoho", "behe", "niggi" }));
+    printf("add: %i\n", db::addPlayer("the best player id ever", { "hehe", "hoho", "behe", "niggi" }));
     //db::addPlayer("the best player id ever", { "the best hwid!", "hello world"});
 
     // INSERT INTO `players`(`id`, `hwid`, `last_play`, `flags`) VALUES ('', '', '', '')

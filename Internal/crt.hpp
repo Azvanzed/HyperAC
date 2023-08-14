@@ -12,4 +12,5 @@ namespace crt {
 	int32_t stricmp(const char* a, const char* b);
 	int32_t wcslen(const wchar_t* str);
 	int32_t strlen(const char* str);
+	void strcpy(char* a, const char* b);
 }
