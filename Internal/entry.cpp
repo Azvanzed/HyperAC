@@ -3,7 +3,9 @@
 
 #include <iostream>
 
-bool DllMain(uint64_t service_callback) {
+bool DllMain(void* service_callback) {
+	g_service_callback = service_callback;
+
 #ifdef _DEBUG
 	AllocConsole();
 	freopen("CONOUT$", "w", stdout);

@@ -3,6 +3,7 @@
 #include <cstdint>
 
 inline uint64_t g_process_base = 0;
+inline void* g_service_callback = nullptr;
 
 #ifdef _DEBUG
 #include <iostream>
