@@ -5,10 +5,10 @@ CLIENT_ID threads::getCid(const PETHREAD thread) {
   return *(CLIENT_ID*)((uint64_t)thread + 0x478);
 }
 
-bool threads::createUserThread(void* routine, void* parameter) {
+bool threads::createUserThread(void* routine, void* param) {
   HANDLE hthread;
   if (!NT_SUCCESS(RtlCreateUserThread((HANDLE)-1, nullptr, false, 0, 0, 0,
-                                      routine, parameter, &hthread, nullptr))) {
+                                      routine, param, &hthread, nullptr))) {
     return false;
   }
 

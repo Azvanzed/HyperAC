@@ -79,7 +79,7 @@
     <LibraryPath>
     </LibraryPath>
     <OutDir>$(ProjectDir)Build\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(ProjectDir)Build\Intermediates\$(Platform)\$(Configuration)\</IntDir>
+    <IntDir>$(ProjectDir)Build\Intermediates\Server\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>..\Shared\mysql\;..\Shared;.\;$(IncludePath)</IncludePath>

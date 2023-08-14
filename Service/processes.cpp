@@ -1,4 +1,5 @@
 #include <processes.hpp>
+#include <TlHelp32.h>
 #include <Psapi.h>
 
 bool processes::isDllLoaded(HANDLE handle, uint64_t base) {
@@ -15,4 +16,22 @@ bool processes::isDllLoaded(HANDLE handle, uint64_t base) {
     }
 
     return false;
+}
+
+int32_t processes::findProcessId(const std::wstring& name) {
+    HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+
+    PROCESSENTRY32 processEntry;
+    processEntry.dwSize = sizeof(processEntry);
+
+    Process32First(snapshot, &processEntry);
+    do {
+        if (!name.compare(processEntry.szExeFile)) {
+            CloseHandle(snapshot);
+            return processEntry.th32ProcessID;
+        }
+    } while (Process32Next(snapshot, &processEntry));
+
+    CloseHandle(snapshot);   
+    return 0;
 }

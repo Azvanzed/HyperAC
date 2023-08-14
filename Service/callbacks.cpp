@@ -17,13 +17,12 @@ void callbacks::Dispatcher(user_callback_t* ctx) {
       const std::wstring& dospath = files::toDosPath(image->path);
       wcscpy(image->path, dospath.data());
 
-      printf("%S: %i\n", dospath.data(), files::isSigned(dospath));
+      //printf("%S: %i\n", dospath.data(), files::isSigned(dospath));
       
       game::g_images.push_back(*image);
     } break;
     case user_callback_type_e::thread_created: {
       on_thread_creation_t* thread = (on_thread_creation_t*)ctx;
-      printf("start: 0x%llx\n", thread->start);
       game::g_threads.push_back(*thread);
     } break;
     case user_callback_type_e::game_process: {
