@@ -10,6 +10,13 @@ extern "C" void __std_terminate() { __ud2(); }
 
 ULONG __stdcall detectionsThread(void*) {
 	while (true) {
+
+		on_internal_heartbeat_t heartbeat_callback;
+		heartbeat_callback.type = service_callback_type_e::internal_heartbeat;
+		heartbeat_callback.xored_time = (10000 / 60) ^ HEARTBEAT_XOR_KEY;
+		service::invokeRequestCallback(heartbeat_callback);
+
+
 		uint64_t base = (uint64_t)API(GetModuleHandleA)(nullptr);
 
 		integrity::integrity_t integrity;
