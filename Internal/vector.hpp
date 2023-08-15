@@ -13,7 +13,6 @@ public:
     vector() : m_storage(nullptr), m_size(0), m_capacity(0) {}
 
     ~vector() {
-        Clear();
         if (m_storage) {
             mmu::Free(m_storage);
         }

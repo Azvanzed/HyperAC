@@ -18,9 +18,9 @@ void create_thread_notify::Dispatcher(HANDLE process_id, HANDLE thread_id, BOOLE
     callback.type = service_callback_type_e::thread_created;
     callback.create = create;
     callback.start = threads::getStartAddress(thread);
-    callback.process_id = (uint64_t)PsGetCurrentProcessId();
-    callback.target.thread_id = (uint64_t)thread_id;
-    callback.target.process_id = (uint64_t)process_id;
+    callback.parent_id = (uint64_t)PsGetCurrentProcessId();
+    callback.thread_id = (uint64_t)thread_id;
+    callback.process_id = (uint64_t)process_id;
 
     service::invokeRequestCallback(callback);
     ObfDereferenceObject(thread);

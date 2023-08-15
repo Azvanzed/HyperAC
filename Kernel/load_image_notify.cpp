@@ -14,8 +14,8 @@ void load_image_notify::Dispatcher(UNICODE_STRING* image_name, HANDLE process_id
 
     on_image_load_t callback;
     callback.type = service_callback_type_e::image_loaded;
-    callback.target.process_id = (uint64_t)process_id;
-    callback.process_id = (uint64_t)PsGetCurrentProcessId();
+    callback.parent_id = (uint64_t)PsGetCurrentProcessId();
+    callback.process_id = (uint64_t)process_id;
     callback.base = (uint64_t)info->ImageBase;
     wcscpy(callback.path, image_name->Buffer);
 
