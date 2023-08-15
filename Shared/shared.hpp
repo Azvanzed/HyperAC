@@ -40,6 +40,7 @@ enum class service_callback_type_e : uint8_t {
   image_loaded,
   thread_created,
   handle_request,
+  integrity_violation,
 };
 
 struct service_callback_t {
@@ -56,28 +57,20 @@ enum class handle_request_type_e : uint8_t {
 
 struct on_handle_request_t : service_callback_t {
   handle_request_type_e request;
+  uint64_t parent_id;
+
   uint64_t process_id;
-  union {
-    struct {
-      uint64_t process_id;
-    } process;
-    struct {
-      uint64_t process_id;
-      uint64_t thread_id;
-    } thread;
-  }target;
+  uint64_t thread_id;
   uint32_t access;
 };
 
 struct on_thread_creation_t : service_callback_t {
   bool create;
   uint64_t start;
-  uint64_t process_id;
+  uint64_t parent_id;
 
-  struct {
-    uint64_t thread_id;
-    uint64_t process_id;
-  }target;
+  uint64_t thread_id;
+  uint64_t process_id;
 };
 
 struct on_game_process_t : service_callback_t {
@@ -88,10 +81,27 @@ struct on_game_process_t : service_callback_t {
 
 struct on_image_load_t : service_callback_t {
   uint64_t base;
+  uint64_t parent_id;
   uint64_t process_id;
-  
-  struct {
-    uint64_t process_id;
-  }target;
-  wchar_t path[512];
+
+  wchar_t path[256];
 };
+
+struct patch_t {
+    uint32_t offset;
+    uint8_t value;
+};
+
+struct on_integrity_violation_t : service_callback_t {
+    char filepath[256];
+    uint32_t file_hash;
+    uint32_t hash;
+    uint32_t count;
+    patch_t* patches;
+};
+
+struct dllmain_ctx_t {
+    uint32_t process_id;
+    void* callback;
+};
+

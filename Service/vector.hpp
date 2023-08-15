@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Windows.h>
 #include <cstdint>
 
 template <typename T>
@@ -14,17 +15,17 @@ public:
 
     ~vector() {
         if (m_storage) {
-            mmu::Free(m_storage);
+            VirtualFree(m_storage, 0, MEM_RELEASE);
         }
     }
 
     T* Reserve() {
         if (m_size >= m_capacity) {
             m_capacity = (m_capacity == 0) ? 1 : m_capacity * 2;
-            T* new_storage = (T*)mmu::allocateEx(m_capacity * sizeof(T));
+            T* new_storage = (T*)VirtualAlloc(nullptr, m_capacity * sizeof(T), MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
             if (m_storage) {
-                crt::memcpy(new_storage, m_storage, m_size * sizeof(T));
-                mmu::Free(m_storage);
+                memcpy(new_storage, m_storage, m_size * sizeof(T));
+                VirtualFree(m_storage, 0, MEM_RELEASE);
             }
 
             m_storage = new_storage;

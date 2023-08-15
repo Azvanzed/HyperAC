@@ -13,8 +13,8 @@ void ob_pre_operation::onOpenProcess(OB_PRE_OPERATION_INFORMATION* ctx) {
   on_handle_request_t callback;
   callback.type = service_callback_type_e::handle_request;
   callback.request = handle_request_type_e::open_process;
-  callback.process_id = (uint64_t)PsGetCurrentProcessId();
-  callback.target.process.process_id = (uint64_t)process_id;
+  callback.parent_id = (uint64_t)PsGetCurrentProcessId();
+  callback.process_id = (uint64_t)process_id;
   callback.access = ctx->Parameters->CreateHandleInformation.DesiredAccess;
 
   service::invokeRequestCallback(callback);
@@ -29,8 +29,8 @@ void ob_pre_operation::onDupProcess(OB_PRE_OPERATION_INFORMATION* ctx) {
   on_handle_request_t callback;
   callback.type = service_callback_type_e::handle_request;
   callback.request = handle_request_type_e::dup_process;
-  callback.process_id = (uint64_t)PsGetCurrentProcessId();
-  callback.target.process.process_id = (uint64_t)process_id;
+  callback.parent_id = (uint64_t)PsGetCurrentProcessId();
+  callback.process_id = (uint64_t)process_id;
   callback.access = ctx->Parameters->DuplicateHandleInformation.DesiredAccess;
 
   service::invokeRequestCallback(callback);
@@ -45,9 +45,9 @@ void ob_pre_operation::onOpenThread(OB_PRE_OPERATION_INFORMATION* ctx) {
   on_handle_request_t callback;
   callback.type = service_callback_type_e::handle_request;
   callback.request = handle_request_type_e::open_thread;
-  callback.process_id = (uint64_t)PsGetCurrentProcessId();
-  callback.target.thread.thread_id = (uint64_t)cid.UniqueThread;
-  callback.target.thread.process_id = (uint64_t)cid.UniqueProcess;
+  callback.parent_id = (uint64_t)PsGetCurrentProcessId();
+  callback.thread_id = (uint64_t)cid.UniqueThread;
+  callback.process_id = (uint64_t)cid.UniqueProcess;
   callback.access = ctx->Parameters->CreateHandleInformation.DesiredAccess;
 
   service::invokeRequestCallback(callback);
@@ -62,9 +62,9 @@ void ob_pre_operation::onDupThread(OB_PRE_OPERATION_INFORMATION* ctx) {
   on_handle_request_t callback;
   callback.type = service_callback_type_e::handle_request;
   callback.request = handle_request_type_e::dup_thread;
-  callback.process_id = (uint64_t)PsGetCurrentProcessId();
-  callback.target.thread.thread_id = (uint64_t)cid.UniqueThread;
-  callback.target.thread.process_id = (uint64_t)cid.UniqueProcess;
+  callback.parent_id = (uint64_t)PsGetCurrentProcessId();
+  callback.thread_id = (uint64_t)cid.UniqueThread;
+  callback.process_id = (uint64_t)cid.UniqueProcess;
   callback.access = ctx->Parameters->DuplicateHandleInformation.DesiredAccess;
 
   service::invokeRequestCallback(callback);
