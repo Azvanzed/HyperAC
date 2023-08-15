@@ -91,11 +91,16 @@
   <ItemGroup>
     <ClCompile Include="db.cpp" />
     <ClCompile Include="entry.cpp" />
+    <ClCompile Include="files.cpp" />
+    <ClCompile Include="storage.cpp" />
     <ClCompile Include="workers.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="db.hpp" />
+    <ClInclude Include="files.hpp" />
+    <ClInclude Include="packets.hpp" />
     <ClInclude Include="queue.hpp" />
+    <ClInclude Include="storage.hpp" />
     <ClInclude Include="workers.hpp" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -106,6 +111,9 @@
       <LibraryDependencies>
       </LibraryDependencies>
     </Link>
+    <ClCompile>
+      <CppLanguageStandard>c++17</CppLanguageStandard>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Link>
@@ -117,7 +125,10 @@
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <CAdditionalWarning>%(CAdditionalWarning)</CAdditionalWarning>
       <CppAdditionalWarning>%(CppAdditionalWarning)</CppAdditionalWarning>
-      <AdditionalOptions>/permissive- %(AdditionalOptions)</AdditionalOptions>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+      <Optimization>MaxSpeed</Optimization>
+      <OmitFramePointers>true</OmitFramePointers>
     </ClCompile>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

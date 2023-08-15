@@ -6,17 +6,17 @@
 #include <thread>
 
 namespace workers {
-    using handler_t = void(*)(void*, void*, size_t*);
+    using handler_t = bool(*)(void*, void**);
 
     struct work_t {
         bool is_critical;
+
         handler_t handler;
 
         size_t input_size;
         void* input;
 
-        void* output;
-        size_t* output_size;
+        void** output;
     };
 
 
@@ -25,7 +25,7 @@ namespace workers {
 
     inline queue<work_t> g_works;
 
-    void queueWork(void* handler, void* input, size_t input_size, void* output = nullptr, size_t* output_size = nullptr);
+    void queueWork(void* handler, void* input, size_t input_size, void** output = nullptr);
 
     void workerThread();
 

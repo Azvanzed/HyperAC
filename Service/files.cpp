@@ -3,6 +3,8 @@
 #include <filesystem>
 #include <WinTrust.h>
 #include <softpub.h>
+#include <fstream>
+
 std::wstring files::toDosPath(const std::wstring& devicepath) {
   wchar_t drives[256];
   if (!GetLogicalDriveStringsW(sizeof(drives) / sizeof(wchar_t) - 1, drives)) {
@@ -44,4 +46,15 @@ bool files::isSigned(const std::wstring& filepath) {
 
     GUID policy = WINTRUST_ACTION_GENERIC_VERIFY_V2;
     return WinVerifyTrust((HWND)-1, &policy, &wvt_data) == ERROR_SUCCESS;
+}
+
+bool files::Read(const std::string& filepath, std::vector<uint8_t>* buffer) {
+    std::ifstream stream(filepath, std::ios::binary);
+    if (!stream.is_open()) {
+        return false;
+    }
+
+    buffer->assign((std::istreambuf_iterator<char>(stream)), std::istreambuf_iterator<char>());
+    stream.close();
+    return !buffer->empty();
 }

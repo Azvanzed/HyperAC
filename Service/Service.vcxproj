@@ -156,6 +156,7 @@
     <ClCompile Include="processes.cpp" />
     <ClCompile Include="processes.hpp" />
     <ClCompile Include="scm.cpp" />
+    <ClCompile Include="server.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="docs.hpp" />
@@ -163,7 +164,9 @@
     <ClInclude Include="globals.hpp" />
     <ClInclude Include="files.hpp" />
     <ClInclude Include="ioctl.hpp" />
+    <ClInclude Include="packets.hpp" />
     <ClInclude Include="scm.hpp" />
+    <ClInclude Include="server.hpp" />
     <ClInclude Include="vector.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

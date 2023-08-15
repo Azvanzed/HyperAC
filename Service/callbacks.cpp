@@ -13,14 +13,14 @@
 void callbacks::Dispatcher(service_callback_t* ctx) {
     switch (ctx->type) {
     case service_callback_type_e::image_loaded: {
-        //on_image_load_t* image = (on_image_load_t*)ctx;
+        on_image_load_t* image = (on_image_load_t*)ctx;
 
-        //const std::wstring& dospath = files::toDosPath(image->path);
-        //wcscpy(image->path, dospath.data());
+        const std::wstring& dospath = files::toDosPath(image->path);
+        wcscpy(image->path, dospath.data());
 
-        //printf("%S: %i\n", dospath.data(), files::isSigned(dospath));
-        //
-        //game::g_images.push_back(*image);
+        printf("%S: %i\n", dospath.data(), files::isSigned(dospath));
+        
+        game::g_images.push_back(*image);
     } break;
     case service_callback_type_e::thread_created: {
         //on_thread_creation_t* thread = (on_thread_creation_t*)ctx;
@@ -28,7 +28,6 @@ void callbacks::Dispatcher(service_callback_t* ctx) {
     } break;
     case service_callback_type_e::game_process: {
         on_game_process_t* game = (on_game_process_t*)ctx;
-
         if (!game->created) {
             Sleep(5000);
             VEH_TRIGGER();

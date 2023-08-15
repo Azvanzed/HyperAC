@@ -1,5 +1,3 @@
-#include <Windows.h>
-#include <winternl.h>
 
 #include <callbacks.hpp>
 #include <cstdint>
@@ -9,7 +7,11 @@
 #include <string>
 #include <scm.hpp>
 #include <processes.hpp>
-#include <fstream>
+#include <files.hpp>
+
+#include <server.hpp>
+#include <packets.hpp>
+
 
 LONG NTAPI onRaisedException(EXCEPTION_POINTERS* info) {
 	initialize_input_t input;
@@ -20,16 +22,29 @@ LONG NTAPI onRaisedException(EXCEPTION_POINTERS* info) {
 	exit(0);
 }
 
+int main() {
+	//packet_heartbeat_input_t heartbeat = { sizeof(packet_heartbeat_input_t) };
+	//heartbeat.type = packet_type_e::heartbeat;
+	//heartbeat.status.dll = false;
+	//heartbeat.status.sys = true;
+	//server::sendServer(&heartbeat);
 
-void readFile(const std::string& filepath, std::vector<uint8_t>* buffer) {
-	std::ifstream stream(filepath, std::ios::binary);
-	buffer->assign((std::istreambuf_iterator<char>(stream)), std::istreambuf_iterator<char>());
-	stream.close();
-}
+	printf("streaming shellcode...\n");
+	packet_shellcode_input_t shellcode = { sizeof(packet_shellcode_input_t) };
+	shellcode.type = packet_type_e::shellcode;
+	shellcode.shellcode = shellcode_type_e::main;
 
-int main(int, char** argv) {
+	packet_shellcode_output_t* output = nullptr;
+	server::sendServer(&shellcode, (response_header_t**)&output);
+	printf("shellcode streamed: %.2fkb\n", output->length / 1024.00f);
+
+	std::vector<uint8_t> buffer;
+	for (uint16_t i = 0; i < output->length; ++i) {
+		buffer.push_back(output->data[i]);
+	}
+
+
 	AddVectoredExceptionHandler(1, &onRaisedException);
-
 
 	// initialize driver
 	{
@@ -51,8 +66,8 @@ int main(int, char** argv) {
 	{
 		printf("loading HyperAC.dll\n");
 
-		std::vector<uint8_t> buffer;
-		readFile("HyperAC\\HyperAC.dll", &buffer);
+		//std::vector<uint8_t> buffer;
+		//files::Read("HyperAC\\HyperAC.dll", &buffer);
 
 		printf("HyperAC.dll: %.2fkb\n", buffer.size() / 1024.00f);
 

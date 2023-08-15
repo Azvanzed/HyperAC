@@ -57,3 +57,10 @@ uint64_t win::findExport(const char* name) {
     return 0;
 }
 
+int64_t win::getTime() {
+    FILETIME ft;
+    GetSystemTimeAsFileTime(&ft);
+
+    int64_t time = ((int64_t)ft.dwHighDateTime << 32) + ft.dwLowDateTime;
+    return (time - 116444736000000000i64) / 10000000;
+}
