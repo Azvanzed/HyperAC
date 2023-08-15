@@ -49,8 +49,19 @@ int main(int, char** argv) {
 	Sleep(2000);
 
 	{
+
 		printf("loading HyperAC.dll\n");
 
+#pragma region driver_heartbeat
+		driver_hearbeat_input_t driver_heartbeat_input = { .nonce = __rdtsc()};
+		driver_hearbeat_output_t driver_heartbeat_output = { 0 };
+		ioctl::sendDriverEx(IOCTL_HYPERAC_DRIVER_HEARTBEAT, &driver_heartbeat_input, sizeof(driver_heartbeat_input), &driver_heartbeat_output, sizeof(driver_heartbeat_output));
+		if ((driver_heartbeat_output.xored_response ^ HEARTBEAT_XOR_KEY) != driver_heartbeat_input.nonce)
+		{
+			printf("driver heartbeat is invalid (spoofed/emulated)\n");
+			return 0;
+		}
+#pragma endregion driver_heartbeat
 		std::vector<uint8_t> buffer;
 		readFile("HyperAC\\HyperAC.dll", &buffer);
 
@@ -77,7 +88,11 @@ int main(int, char** argv) {
 
 		free(input);
 	}
-	while (true);
+	while (true)
+	{
+		printf("g_last_internal_tick %d", g_last_internal_tick);
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	}
 
 	return 0;
 }

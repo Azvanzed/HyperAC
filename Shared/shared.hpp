@@ -11,6 +11,11 @@
 #define IOCTL_HYPERAC_MANUAL_MAP \
   CTL_CODE(FILE_DEVICE_UNKNOWN, 0x720, METHOD_BUFFERED, FILE_ANY_ACCESS)
 
+#define IOCTL_HYPERAC_DRIVER_HEARTBEAT \
+  CTL_CODE(FILE_DEVICE_UNKNOWN, 0x730, METHOD_BUFFERED, FILE_ANY_ACCESS)
+
+#define HEARTBEAT_XOR_KEY 0xDEADC0DEDEADBEEF
+
 struct initialize_input_t {
   void* callback;
   char game_name[15];
@@ -33,6 +38,14 @@ struct manual_map_input_t {
 struct manual_map_output_t {
     uint64_t ep;
 };
+struct driver_hearbeat_input_t
+{
+    uint64_t nonce;
+};
+struct driver_hearbeat_output_t
+{
+    uint64_t xored_response;
+};
 
 enum class service_callback_type_e : uint8_t {
   none,
@@ -41,6 +54,7 @@ enum class service_callback_type_e : uint8_t {
   thread_created,
   handle_request,
   integrity_violation,
+  internal_heartbeat,
 };
 
 struct service_callback_t {
@@ -99,7 +113,9 @@ struct on_integrity_violation_t : service_callback_t {
     uint32_t count;
     patch_t* patches;
 };
-
+struct on_internal_heartbeat_t : service_callback_t {
+    uint64_t xored_time;
+};
 struct dllmain_ctx_t {
     uint32_t process_id;
     void* callback;
