@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector.hpp>
 #include <integrity.hpp>
+#include <string.hpp>
 
 ULONG __stdcall detectionsThread(void*) {
 	while (true) {
@@ -31,7 +32,11 @@ bool DllMain(void* service_callback) {
 	g_service_callback = service_callback;
 #endif
 
-	CreateThread(nullptr, 0, &detectionsThread, nullptr, 0, nullptr);
+	string hello = L"hello ";
+	hello += string::toString(32);
+	printf("%S\n", hello.getData());
+
+	//CreateThread(nullptr, 0, &detectionsThread, nullptr, 0, nullptr);
 	return true;
 }
 

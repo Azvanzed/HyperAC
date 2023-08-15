@@ -173,6 +173,7 @@
     <ClCompile Include="hash.cpp" />
     <ClCompile Include="integrity.cpp" />
     <ClCompile Include="mmu.cpp" />
+    <ClCompile Include="string.cpp" />
     <ClCompile Include="win.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -182,6 +183,7 @@
     <ClInclude Include="hash.hpp" />
     <ClInclude Include="integrity.hpp" />
     <ClInclude Include="mmu.hpp" />
+    <ClInclude Include="string.hpp" />
     <ClInclude Include="vector.hpp" />
     <ClInclude Include="win.hpp" />
   </ItemGroup>

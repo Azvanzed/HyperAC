@@ -46,7 +46,7 @@ public:
         return m_size == 0;
     }
 
-    T* getStorage() {
+    T* getStorage() const {
         return m_storage;
     }
 
@@ -70,7 +70,7 @@ public:
         m_size = 0;
     }
 
-    T& operator[](size_t index) {
+    T& operator[](size_t index) const {
         return m_storage[index];
     }
 
