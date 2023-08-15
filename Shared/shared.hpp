@@ -84,12 +84,20 @@ struct on_image_load_t : service_callback_t {
   uint64_t parent_id;
   uint64_t process_id;
 
-  
-  wchar_t path[512];
+  wchar_t path[256];
+};
+
+struct patch_t {
+    uint32_t offset;
+    uint8_t value;
 };
 
 struct on_integrity_violation_t : service_callback_t {
-    uint32_t test;
+    char filepath[256];
+    uint32_t file_hash;
+    uint32_t hash;
+    uint32_t count;
+    patch_t* patches;
 };
 
 struct dllmain_ctx_t {

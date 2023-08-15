@@ -1,6 +1,7 @@
 #include <integrity.hpp>
 #include <hash.hpp>
 #include <intrin.h>
+#include <docs.hpp>
 
 integrity::integrity_status_e integrity::verifyModule(uint64_t base, integrity_t* integrity) {
     if (!API(GetModuleFileNameA)((HMODULE)base, integrity->filepath, MAX_PATH)) {
@@ -21,11 +22,10 @@ integrity::integrity_status_e integrity::verifyModule(uint64_t base, integrity_t
         return integrity_failed;
     }
 
-    IMAGE_DOS_HEADER* dos = (IMAGE_DOS_HEADER*)buffer;
-    IMAGE_NT_HEADERS* nt = (IMAGE_NT_HEADERS*)(buffer + dos->e_lfanew);
+    IMAGE_NT_HEADERS* nt = API(RtlImageNtHeader)(buffer);
 
-    integrity->timestamp = nt->FileHeader.TimeDateStamp;
-    integrity->hash = 0xffffffff;
+    integrity->hash = hash::calcHash(base, 0x1000);
+    integrity->file_hash = hash::calcHash((uint64_t)buffer, size);
 
     IMAGE_SECTION_HEADER* section = IMAGE_FIRST_SECTION(nt);
     for (uint16_t i = 0; i < nt->FileHeader.NumberOfSections; ++i, ++section) {

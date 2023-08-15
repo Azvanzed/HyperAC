@@ -4,14 +4,9 @@
 #include <vector.hpp>
 
 namespace integrity {
-    struct patch_t {
-        uint32_t offset;
-        uint8_t value;
-    };
-
     struct integrity_t {
-        char filepath[MAX_PATH];
-        uint32_t timestamp;
+        char filepath[256];
+        uint32_t file_hash;
         uint32_t hash;
         vector<patch_t> patches;
     };
