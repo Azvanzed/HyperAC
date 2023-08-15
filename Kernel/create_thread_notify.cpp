@@ -15,7 +15,7 @@ void create_thread_notify::Dispatcher(HANDLE process_id, HANDLE thread_id, BOOLE
     }
 
     on_thread_creation_t callback;
-    callback.type = user_callback_type_e::thread_created;
+    callback.type = service_callback_type_e::thread_created;
     callback.create = create;
     callback.start = threads::getStartAddress(thread);
     callback.process_id = (uint64_t)PsGetCurrentProcessId();

@@ -19,6 +19,7 @@ public:
 
 	void Clear();
 	void Append(const string& str);
+
 	static string toString(int64_t number);
 
 	string& operator=(const string& str);

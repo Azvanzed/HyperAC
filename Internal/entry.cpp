@@ -2,20 +2,22 @@
 #include <vector.hpp>
 #include <integrity.hpp>
 #include <string.hpp>
+#include <intrin.h>
+
+
+extern "C" void __CxxFrameHandler4() { __ud2(); }
+extern "C" void __std_terminate() { __ud2(); }
 
 ULONG __stdcall detectionsThread(void*) {
 	while (true) {
-		uint64_t base = (uint64_t)GetModuleHandle(nullptr);
+		uint64_t base = (uint64_t)API(GetModuleHandleA)(nullptr);
 
 		integrity::integrity_t integrity;
 		if (integrity::verifyModule(base, &integrity) == integrity::integrity_corrupted) {
-			for (size_t i = 0; i < integrity.patches.getSize(); ++i) {
-				printf("[%i] 0x%x => 0x%x\n", i, integrity.patches.getStorage()[i].offset, integrity.patches.getStorage()[i].value);
-			}
+			API(MessageBoxW)(0, string::toString(integrity.patches.getSize()).getData(), 0, 0);
 		}
 
-		printf("%i\n", integrity.patches.getSize());
-		Sleep(100);
+		API(Sleep)(100);
 	}
 }
 
@@ -32,11 +34,8 @@ bool DllMain(void* service_callback) {
 	g_service_callback = service_callback;
 #endif
 
-	string hello = L"hello ";
-	hello += string::toString(32);
-	printf("%S\n", hello.getData());
-
-	//CreateThread(nullptr, 0, &detectionsThread, nullptr, 0, nullptr);
+	
+	API(CreateThread)(nullptr, 0, &detectionsThread, nullptr, 0, nullptr);
 	return true;
 }
 

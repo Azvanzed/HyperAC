@@ -22,6 +22,7 @@ NTSTATUS ioctl::Dispatcher(DEVICE_OBJECT* drv, IRP* irp) {
       initialize_output_t* output = (initialize_output_t*)irp->AssociatedIrp.SystemBuffer;
 
       g_service_callback = input.callback;
+      g_service = IoGetCurrentProcess();
       strcpy(g_game_name, input.game_name);
 
       if (!ob_pre_operation::Register()) {
@@ -30,11 +31,11 @@ NTSTATUS ioctl::Dispatcher(DEVICE_OBJECT* drv, IRP* irp) {
       } else if (!create_process_notify::Register()) {
         print("failed to register a CreateProcess Callback");
         break;
+      } else if (!load_image_notify::Register()) {
+          print("failed to register a LoadImage Callback");
+          break;
       } else if (!create_thread_notify::Register()) {
         print("failed to register a CreateThread Callback");
-        break;
-      } else if (!load_image_notify::Register()) {
-        print("failed to register a LoadImage Callback");
         break;
       }
 

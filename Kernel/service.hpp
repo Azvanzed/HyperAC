@@ -3,7 +3,7 @@
 #include <cstdint>
 
 namespace service {
-bool invokeRequestCallbackEx(void* buffer, const size_t buffer_size);
+bool invokeRequestCallbackEx(void* buffer, size_t size);
 
 template <typename T>
 bool invokeRequestCallback(const T& buffer) {

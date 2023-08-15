@@ -13,6 +13,8 @@ string::string(const wchar_t* str) {
 }
 
 string::string(int64_t number) {
+    m_storage.Clear();
+
     if (number == 0) {
         m_storage.pushBack(L'0');
         m_storage.pushBack(L'\0');
@@ -22,11 +24,10 @@ string::string(int64_t number) {
     bool isNegative = false;
     if (number < 0) {
         isNegative = true;
-        number = -number;
     }
 
     while (number != 0) {
-        wchar_t digit = (number % 10) + L'0';
+        wchar_t digit = (wchar_t)(abs(number % 10)) + L'0';
         m_storage.pushBack(digit);
         number /= 10;
     }
@@ -38,7 +39,9 @@ string::string(int64_t number) {
     size_t start = 0;
     size_t end = m_storage.getSize() - 1;
     while (start < end) {
-        std::swap(m_storage[start], m_storage[end]);
+        wchar_t temp = m_storage[start];
+        m_storage[start] = m_storage[end];
+        m_storage[end] = temp;
         start++;
         end--;
     }
@@ -60,11 +63,12 @@ void string::Clear() {
 }
 
 void string::Append(const string& str) {
-    m_storage.Pop(); // remove null terminator from the current string
+    m_storage.Pop();
     for (size_t i = 0; i < str.getSize(); ++i) {
         m_storage.pushBack(str[i]);
     }
-    m_storage.pushBack(L'\0'); // re-add the null terminator
+
+    m_storage.pushBack(L'\0');
 }
 
 string& string::operator=(const string& str) {
