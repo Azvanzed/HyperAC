@@ -1,28 +1,22 @@
 #include <iostream>
+#include <vector.hpp>
 #include <integrity.hpp>
 
-
-DWORD __stdcall Test(PVOID) {
+ULONG __stdcall detectionsThread(void*) {
 	while (true) {
+		uint64_t base = (uint64_t)GetModuleHandle(nullptr);
 
-		uint32_t modified_count = 0;
-		integrity::modified_byte_t* modified_bytes = nullptr;
-
-		integrity::verifyModuleIntegrity((uint64_t)GetModuleHandleW(nullptr), &modified_bytes, &modified_count);
-
-		system("cls");
-		if (modified_bytes) {
-			for (uint32_t i = 0; i < modified_count; ++i) {
-				printf("[%i|%s] 0x%x. %02x\n", i, modified_bytes[i].name, modified_bytes[i].offset, modified_bytes[i].patch);
+		integrity::integrity_t integrity;
+		if (integrity::verifyModule(base, &integrity) == integrity::integrity_corrupted) {
+			for (size_t i = 0; i < integrity.patches.getSize(); ++i) {
+				printf("[%i] 0x%x => 0x%x\n", i, integrity.patches.getStorage()[i].offset, integrity.patches.getStorage()[i].value);
 			}
-			
-			mmu::Free(modified_bytes);
 		}
 
+		printf("%i\n", integrity.patches.getSize());
 		Sleep(100);
 	}
 }
-
 
 #ifdef _DEBUG
 bool DllMain(void*, uint32_t reason) {
@@ -37,8 +31,7 @@ bool DllMain(void* service_callback) {
 	g_service_callback = service_callback;
 #endif
 
-	CreateThread(nullptr, 0, &Test, 0, 0, 0);
-	
+	CreateThread(nullptr, 0, &detectionsThread, nullptr, 0, nullptr);
 	return true;
 }
 

@@ -1,16 +1,21 @@
 #pragma once
 
 #include <cstdint>
+#include <vector.hpp>
 
 namespace integrity
 {
-#pragma pack(push, 1)
-	struct modified_byte_t {
-		char name[8];
+	struct patch_t {
 		uint32_t offset;
-		uint8_t patch;
+		uint8_t value;
 	};
-#pragma pop
+
+	struct integrity_t {
+		char filepath[MAX_PATH];
+		uint32_t timestamp;
+		uint32_t hash;
+		vector<patch_t> patches;
+	};
 
 	enum integrity_status_e : uint8_t {
 		integrity_failed,
@@ -18,6 +23,6 @@ namespace integrity
 		integrity_valid
 	};
 
-	integrity_status_e verifyModuleIntegrity(uint64_t base, modified_byte_t** modified_bytes, uint32_t* modified_count);
+	integrity_status_e verifyModule(uint64_t base, integrity_t* integrity);
 }
 
