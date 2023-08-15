@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <string.h>
 
+
 std::vector<std::string> db::tokenize(const std::string& str) {
 	std::vector<std::string> tokens;
 	size_t start = 0;
@@ -36,9 +37,7 @@ bool db::findPlayers(const std::string& id, std::vector<player_t>* players) {
 	auto result = statement->executeQuery("SELECT * FROM `players` WHERE `id`='" + id + "';");
 	
 	while (result->next()) {
-		player_t player;
-		memset(&player, 0, sizeof(player_t));
-
+		player_t player ;
 		player.id = result->getString("id");
 		player.hwids = db::tokenize(result->getString("hwids"));
 		player.flags = result->getInt("flags");

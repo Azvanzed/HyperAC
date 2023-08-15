@@ -78,8 +78,8 @@
     <IncludePath>..\Shared\mysql\;..\Shared;.\;$(IncludePath)</IncludePath>
     <LibraryPath>
     </LibraryPath>
-    <OutDir>$(ProjectDir)Build\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(ProjectDir)Build\Intermediates\Server\</IntDir>
+    <OutDir>$(ProjectDir)bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)obj\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>..\Shared\mysql\;..\Shared;.\;$(IncludePath)</IncludePath>
@@ -91,9 +91,11 @@
   <ItemGroup>
     <ClCompile Include="db.cpp" />
     <ClCompile Include="entry.cpp" />
+    <ClCompile Include="storage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="db.hpp" />
+    <ClInclude Include="storage.hpp" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Link>
@@ -103,6 +105,9 @@
       <LibraryDependencies>
       </LibraryDependencies>
     </Link>
+    <ClCompile>
+      <CppLanguageStandard>c++17</CppLanguageStandard>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Link>
@@ -110,7 +115,7 @@
       <AdditionalDependencies>/usr/lib/x86_64-linux-gnu/libmysqlcppconn.so;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ClCompile>
-      <CppLanguageStandard>c++17</CppLanguageStandard>
+      <CppLanguageStandard>c++20</CppLanguageStandard>
     </ClCompile>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
