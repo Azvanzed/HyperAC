@@ -89,6 +89,7 @@
     <RemoteOutRelDir>$(RemoteProjectRelDir)/bin/$(Platform)/$(Configuration)</RemoteOutRelDir>
   </PropertyGroup>
   <ItemGroup>
+    <ClCompile Include="handlers.cpp" />
     <ClCompile Include="db.cpp" />
     <ClCompile Include="entry.cpp" />
     <ClCompile Include="files.cpp" />
@@ -98,6 +99,7 @@
   <ItemGroup>
     <ClInclude Include="db.hpp" />
     <ClInclude Include="files.hpp" />
+    <ClInclude Include="handlers.hpp" />
     <ClInclude Include="packets.hpp" />
     <ClInclude Include="queue.hpp" />
     <ClInclude Include="storage.hpp" />

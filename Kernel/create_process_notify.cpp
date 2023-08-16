@@ -23,7 +23,7 @@ void create_process_notify::Dispatcher(HANDLE parent_id, HANDLE process_id, BOOL
     on_game_process_t callback;
     callback.type = service_callback_type_e::game_process;
     callback.created = create;
-    callback.parent_id = (uint64_t)parent_id;
+    callback.parent_pid = (uint64_t)parent_id;
     callback.process_id = (uint64_t)process_id;
 
     service::invokeRequestCallback(callback);

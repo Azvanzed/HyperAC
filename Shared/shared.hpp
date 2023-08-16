@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <stddef.h>
 
 #define CTL_CODE( DeviceType, Function, Method, Access ) (                 \
     ((DeviceType) << 16) | ((Access) << 14) | ((Function) << 2) | (Method) \
@@ -45,13 +46,13 @@ struct manual_map_input_t {
 struct manual_map_output_t {
     uint64_t ep;
 };
-struct driver_hearbeat_input_t
-{
-    uint64_t nonce;
+
+struct kernel_heartbeat_input_t {
+    uint64_t value;
 };
-struct driver_hearbeat_output_t
-{
-    uint64_t xored_response;
+
+struct kernel_heartbeat_output_t {
+    uint64_t hashed;
 };
 
 enum class service_callback_type_e : uint8_t {
@@ -78,7 +79,7 @@ enum class handle_request_type_e : uint8_t {
 
 struct on_handle_request_t : service_callback_t {
   handle_request_type_e request;
-  uint64_t parent_id;
+  uint64_t parent_pid;
 
   uint64_t process_id;
   uint64_t thread_id;
@@ -88,7 +89,7 @@ struct on_handle_request_t : service_callback_t {
 struct on_thread_creation_t : service_callback_t {
   bool create;
   uint64_t start;
-  uint64_t parent_id;
+  uint64_t parent_pid;
 
   uint64_t thread_id;
   uint64_t process_id;
@@ -96,13 +97,13 @@ struct on_thread_creation_t : service_callback_t {
 
 struct on_game_process_t : service_callback_t {
   bool created;
-  uint64_t parent_id;
+  uint64_t parent_pid;
   uint64_t process_id;
 };
 
 struct on_image_load_t : service_callback_t {
   uint64_t base;
-  uint64_t parent_id;
+  uint64_t parent_pid;
   uint64_t process_id;
 
   wchar_t path[256];
@@ -120,9 +121,11 @@ struct on_integrity_violation_t : service_callback_t {
     uint32_t count;
     patch_t* patches;
 };
+
 struct on_internal_heartbeat_t : service_callback_t {
-    uint64_t xored_time;
+    uint64_t hashed;
 };
+
 struct dllmain_ctx_t {
     uint32_t process_id;
     void* callback;

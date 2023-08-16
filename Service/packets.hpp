@@ -26,8 +26,8 @@ struct response_header_t {
 
 struct packet_heartbeat_input_t : request_header_t {
     struct {
-        bool dll : 1;
-        bool sys : 1;
+        bool _internal : 1;
+        bool kernel : 1;
     }status;
 };
 

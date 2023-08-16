@@ -13,7 +13,7 @@ void ob_pre_operation::onOpenProcess(OB_PRE_OPERATION_INFORMATION* ctx) {
   on_handle_request_t callback;
   callback.type = service_callback_type_e::handle_request;
   callback.request = handle_request_type_e::open_process;
-  callback.parent_id = (uint64_t)PsGetCurrentProcessId();
+  callback.parent_pid = (uint64_t)PsGetCurrentProcessId();
   callback.process_id = (uint64_t)process_id;
   callback.access = ctx->Parameters->CreateHandleInformation.DesiredAccess;
 
@@ -29,7 +29,7 @@ void ob_pre_operation::onDupProcess(OB_PRE_OPERATION_INFORMATION* ctx) {
   on_handle_request_t callback;
   callback.type = service_callback_type_e::handle_request;
   callback.request = handle_request_type_e::dup_process;
-  callback.parent_id = (uint64_t)PsGetCurrentProcessId();
+  callback.parent_pid = (uint64_t)PsGetCurrentProcessId();
   callback.process_id = (uint64_t)process_id;
   callback.access = ctx->Parameters->DuplicateHandleInformation.DesiredAccess;
 
@@ -45,7 +45,7 @@ void ob_pre_operation::onOpenThread(OB_PRE_OPERATION_INFORMATION* ctx) {
   on_handle_request_t callback;
   callback.type = service_callback_type_e::handle_request;
   callback.request = handle_request_type_e::open_thread;
-  callback.parent_id = (uint64_t)PsGetCurrentProcessId();
+  callback.parent_pid = (uint64_t)PsGetCurrentProcessId();
   callback.thread_id = (uint64_t)cid.UniqueThread;
   callback.process_id = (uint64_t)cid.UniqueProcess;
   callback.access = ctx->Parameters->CreateHandleInformation.DesiredAccess;
@@ -62,7 +62,7 @@ void ob_pre_operation::onDupThread(OB_PRE_OPERATION_INFORMATION* ctx) {
   on_handle_request_t callback;
   callback.type = service_callback_type_e::handle_request;
   callback.request = handle_request_type_e::dup_thread;
-  callback.parent_id = (uint64_t)PsGetCurrentProcessId();
+  callback.parent_pid = (uint64_t)PsGetCurrentProcessId();
   callback.thread_id = (uint64_t)cid.UniqueThread;
   callback.process_id = (uint64_t)cid.UniqueProcess;
   callback.access = ctx->Parameters->DuplicateHandleInformation.DesiredAccess;

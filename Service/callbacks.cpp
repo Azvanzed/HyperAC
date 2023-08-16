@@ -5,8 +5,6 @@
 #include <game.hpp>
 #include <iostream>
 #include <files.hpp>
-#include <vector.hpp>
-
 #include <scm.hpp>
 #include <ioctl.hpp>
 
@@ -23,22 +21,23 @@ void callbacks::Dispatcher(service_callback_t* ctx) {
         game::g_images.push_back(*image);
     } break;
     case service_callback_type_e::thread_created: {
-        //on_thread_creation_t* thread = (on_thread_creation_t*)ctx;
-        //game::g_threads.push_back(*thread);
+        on_thread_creation_t* thread = (on_thread_creation_t*)ctx;
+
+        game::g_threads.push_back(*thread);
     } break;
     case service_callback_type_e::game_process: {
         on_game_process_t* game = (on_game_process_t*)ctx;
         if (!game->created) {
-            Sleep(5000);
+            Sleep(2000);
             VEH_TRIGGER();
         }
 
         game::g_process_id = game->process_id;
     } break;
     case service_callback_type_e::handle_request: {
-       // on_handle_request_t* handle = (on_handle_request_t*)ctx;
+        on_handle_request_t* handle = (on_handle_request_t*)ctx;
 
-        //game::g_handles.push_back(*handle);
+        game::g_handles.push_back(*handle);
     } break;
     case service_callback_type_e::integrity_violation: {
         on_integrity_violation_t* integrity = (on_integrity_violation_t*)ctx;
@@ -54,6 +53,12 @@ void callbacks::Dispatcher(service_callback_t* ctx) {
         }
 
         VirtualFree(integrity->patches, 0, MEM_RELEASE);
+    } break;	
+    case service_callback_type_e::internal_heartbeat: {
+        on_internal_heartbeat_t* heartbeat = (on_internal_heartbeat_t*)ctx;
+        if (heartbeat->hashed == ((uint64_t)&Dispatcher ^ HEARTBEAT_XOR_KEY)) {
+            g_last_internal_tick = time(nullptr);
+        }
     } break;
     }
 

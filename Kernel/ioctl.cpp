@@ -69,13 +69,12 @@ NTSTATUS ioctl::Dispatcher(DEVICE_OBJECT* drv, IRP* irp) {
 
         irp->IoStatus.Information = sizeof(manual_map_output_t);
     } break;
-    case IOCTL_HYPERAC_DRIVER_HEARTBEAT:
-    {
-        driver_hearbeat_input_t* input = (driver_hearbeat_input_t*)irp->AssociatedIrp.SystemBuffer;
-        driver_hearbeat_output_t* output = (driver_hearbeat_output_t*)irp->AssociatedIrp.SystemBuffer;
-        output->xored_response = input->nonce ^ HEARTBEAT_XOR_KEY;
+    case IOCTL_HYPERAC_DRIVER_HEARTBEAT: {
+        kernel_heartbeat_input_t* input = (kernel_heartbeat_input_t*)irp->AssociatedIrp.SystemBuffer;
+        input->value ^= HEARTBEAT_XOR_KEY;
+       
         status = STATUS_SUCCESS;
-        irp->IoStatus.Information = sizeof(driver_hearbeat_output_t);
+        irp->IoStatus.Information = sizeof(kernel_heartbeat_output_t);
     } break;
   }
 

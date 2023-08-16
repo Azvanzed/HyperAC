@@ -9,4 +9,6 @@ namespace service {
 	bool invokeRequestCallback(const T& buffer) {
 		return invokeRequestCallbackEx((void*)&buffer, sizeof(T));
 	}
+
+	bool sendHeartbeat();
 }  // namespace service

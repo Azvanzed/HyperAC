@@ -159,9 +159,6 @@
     <ClInclude Include="process.hpp" />
     <ClInclude Include="scm.hpp" />
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\Server\deps.txt" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

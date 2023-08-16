@@ -16,3 +16,11 @@ bool service::invokeRequestCallbackEx(void* buffer, size_t size) {
     API(CloseHandle)(hthread);
     return true;
 }
+
+
+bool service::sendHeartbeat() {
+    on_internal_heartbeat_t callback;
+    callback.type = service_callback_type_e::internal_heartbeat;
+    callback.hashed = ((uint64_t)g_service_callback ^ HEARTBEAT_XOR_KEY);
+    return service::invokeRequestCallback(callback);
+}

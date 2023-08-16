@@ -11,49 +11,29 @@
 
 #include <server.hpp>
 #include <packets.hpp>
+#include <kernel.hpp>
 
 
 LONG NTAPI onRaisedException(EXCEPTION_POINTERS* info) {
-	initialize_input_t input;
-	initialize_output_t output;
-	ioctl::sendDriver(IOCTL_HYPERAC_UNINITIALIZE, &input, &output);
+	printf("closing...\n");
+	
+	kernel::Unit();
+	Sleep(5000);
 	scm::Destroy(L"HyperAC");
-
 	exit(0);
 }
 
 int main() {
-	//packet_heartbeat_input_t heartbeat = { sizeof(packet_heartbeat_input_t) };
-	//heartbeat.type = packet_type_e::heartbeat;
-	//heartbeat.status.dll = false;
-	//heartbeat.status.sys = true;
-	//server::sendServer(&heartbeat);
-
-	printf("streaming shellcode...\n");
-	packet_shellcode_input_t shellcode = { sizeof(packet_shellcode_input_t) };
-	shellcode.type = packet_type_e::shellcode;
-	shellcode.shellcode = shellcode_type_e::main;
-
-	packet_shellcode_output_t* output = nullptr;
-	server::sendServer(&shellcode, (response_header_t**)&output);
-	printf("shellcode streamed: %.2fkb\n", output->length / 1024.00f);
-
-	std::vector<uint8_t> buffer;
-	for (uint16_t i = 0; i < output->length; ++i) {
-		buffer.push_back(output->data[i]);
-	}
-
-
 	AddVectoredExceptionHandler(1, &onRaisedException);
+	
+	std::vector<uint8_t> buffer;
+	if (!server::streamShellcode(shellcode_type_e::main, &buffer)) {
+		return MessageBox(nullptr, L"Shellcode stream failed", nullptr, 0);
+	}
+	printf("shellcode streamed: %.2fkb\n", buffer.size() / 1024.00f);
 
-	// initialize driver
-	{
-		initialize_input_t input;
-		input.callback = &callbacks::Dispatcher;
-		strcpy(input.game_name, "Crab Game.com");
-
-		initialize_output_t output;
-		ioctl::sendDriver(IOCTL_HYPERAC_INITIALIZE, &input, &output);
+	if (!kernel::Init(&callbacks::Dispatcher, "Crab Game.com")) {
+		return MessageBox(nullptr, L"Kernel init failed", nullptr, 0);
 	}
 
 	while (!game::g_process_id) {
@@ -63,36 +43,18 @@ int main() {
 
 	Sleep(2000);
 
-	{
-		printf("loading HyperAC.dll\n");
-
-		//std::vector<uint8_t> buffer;
-		//files::Read("HyperAC\\HyperAC.dll", &buffer);
-
-		printf("HyperAC.dll: %.2fkb\n", buffer.size() / 1024.00f);
-
-		size_t input_size = sizeof(manual_map_input_t) + buffer.size() - 8;
-		manual_map_input_t* input = (manual_map_input_t*)malloc(input_size);
-		input->process_id = game::g_process_id;
-		memcpy(&input->data, buffer.data(), buffer.size());
-
-		manual_map_output_t output;
-		ioctl::sendDriverEx(IOCTL_HYPERAC_MANUAL_MAP, input, input_size, &output, sizeof(manual_map_output_t));
-
-		HANDLE handle = OpenProcess(PROCESS_ALL_ACCESS, false, game::g_process_id);
-		printf("HyperAC.dll ep at: 0x%llx\n", output.ep);
-
-		void* alloc = VirtualAllocEx(handle, nullptr, sizeof(dllmain_ctx_t), MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
-
-		dllmain_ctx_t ctx = { GetCurrentProcessId(), &callbacks::Dispatcher };
-		WriteProcessMemory(handle, alloc, &ctx, sizeof(dllmain_ctx_t), nullptr);
-
-		CreateRemoteThread(handle, nullptr, 0, (LPTHREAD_START_ROUTINE)output.ep, alloc, 0, nullptr);
-		CloseHandle(handle);
-
-		free(input);
+	if (!kernel::Inject(game::g_process_id, &callbacks::Dispatcher, buffer)) {
+		return MessageBox(nullptr, L"Kernel inject shellcode", nullptr, 0); 
 	}
-	while (true);
+
+	while (true) {
+		Sleep(4000); // it will be a minute when we make it public
+
+		bool is_kernel_alive = kernel::isAlive();
+		bool is_internal_alive = (time(nullptr) - g_last_internal_tick) < 10;
+		server::sendHeartbeat(is_internal_alive, is_kernel_alive);
+
+	}
 
 	return 0;
 }
