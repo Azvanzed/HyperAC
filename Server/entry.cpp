@@ -23,6 +23,8 @@ void acceptRequest(tcp::acceptor& acceptor) {
     );
 }
 
+hello, its wcscpy, can you push all the code you did. im bored here and i want to read it
+
 int main() {
     workers::createWorkers(1);
 
